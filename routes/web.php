@@ -2,10 +2,18 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\HomeController;
 
-Route::get('/', function () {
-    return 'Frontend Home';
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/login-test', function () {
+    return view('admin.auth.login');
 });
+
+// Route::get('/', function () {
+//     return 'Frontend Home';
+// });
 
 Route::get('/dashboard', function () {
     return 'Admin Dashboard';
