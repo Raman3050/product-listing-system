@@ -1,0 +1,24 @@
+@props([
+    'title',
+    'subtitle' => ''
+])
+
+<div class="mb-4">
+
+    <h2 class="fw-bold">
+
+        {{ $title }}
+
+    </h2>
+
+    @if($subtitle)
+
+    <p class="text-muted">
+
+        {{ $subtitle }}
+
+    </p>
+
+    @endif
+
+</div>

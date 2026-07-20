@@ -1,13 +1,79 @@
-<div class="col-md-2 bg-light border-end min-vh-100">
+<aside class="sidebar">
 
-    <ul class="nav flex-column p-3">
+    <div class="sidebar-logo">
 
-        <li class="nav-item">
+        <h4>Product Listing</h4>
 
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
             <a href="{{ route('admin.dashboard') }}"
-               class="nav-link">
+               class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+
+                <i class="bi bi-speedometer2"></i>
 
                 Dashboard
+
+            </a>
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-box-seam"></i>
+
+                Products
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-tags"></i>
+
+                Categories
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-award"></i>
+
+                Brands
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-images"></i>
+
+                Banners
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-gear"></i>
+
+                Settings
 
             </a>
 
@@ -15,4 +81,4 @@
 
     </ul>
 
-</div>
+</aside>

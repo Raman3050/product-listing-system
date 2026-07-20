@@ -1,0 +1,12 @@
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.main-content {
+    background: #f8f9fa;
+    min-height: calc(100vh - 120px);
+}

@@ -5,33 +5,34 @@
 
 <body>
 
-<div class="wrapper">
+<div class="admin-wrapper">
 
-    @include('partials.admin.navbar')
+    @include('partials.admin.sidebar')
 
-    <div class="container-fluid">
+    <div class="main-wrapper">
 
-        <div class="row">
+        @include('partials.admin.navbar')
 
-            @include('partials.admin.sidebar')
+        <main class="main-content">
 
-            <main class="col-md-10 ms-sm-auto px-4 py-4">
+            @include('partials.admin.flash-message')
 
-                @include('partials.admin.flash-message')
+            @include("partials.admin.breadcrumbs", [
+                "breadcrumbs" => $breadcrumbs ?? null
+            ])
 
-                @yield('content')
+            @yield('content')
 
-            </main>
+        </main>
 
-        </div>
+        @include('partials.admin.footer')
 
     </div>
-
-    @include('partials.admin.footer')
 
 </div>
 
 @include('partials.admin.scripts')
 
 </body>
+
 </html>
