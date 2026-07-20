@@ -5,25 +5,33 @@
 
 <body>
 
-    @include('partials.admin.sidebar')
+<div class="wrapper">
 
-    <div class="main-wrapper">
+    @include('partials.admin.navbar')
 
-        @include('partials.admin.navbar')
+    <div class="container-fluid">
 
-        <main class="content">
+        <div class="row">
 
-            @include('partials.admin.flash-message')
+            @include('partials.admin.sidebar')
 
-            @yield('content')
+            <main class="col-md-10 ms-sm-auto px-4 py-4">
 
-        </main>
+                @include('partials.admin.flash-message')
 
-        @include('partials.admin.footer')
+                @yield('content')
+
+            </main>
+
+        </div>
 
     </div>
 
-    @include('partials.admin.scripts')
+    @include('partials.admin.footer')
+
+</div>
+
+@include('partials.admin.scripts')
 
 </body>
 </html>
