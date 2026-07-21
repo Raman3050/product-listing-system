@@ -14,7 +14,7 @@
 
                 <i class="bi bi-speedometer2"></i>
 
-                Dashboard
+                <span>Dashboard</span>
 
             </a>
         </li>
@@ -32,15 +32,14 @@
         </li>
 
         <li>
-
-            <a href="#">
+            <a href="{{ route('admin.categories.index') }}"
+               class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
 
                 <i class="bi bi-tags"></i>
 
-                Categories
+                <span>Categories</span>
 
             </a>
-
         </li>
 
         <li>
