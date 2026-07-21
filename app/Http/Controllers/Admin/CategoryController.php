@@ -2,17 +2,36 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\SlugHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
+        $search = request('search');
+
+        $perPage = request('per_page', 10);
+
+        $categories = Category::query()
+
+            ->when($search, function ($query) use ($search) {
+
+                $query->where(function ($q) use ($search) {
+
+            $q->where('name', 'LIKE', "%{$search}%")
+              ->orWhere('slug', 'LIKE', "%{$search}%");
+
+        });
+
+    })
+
+    ->latest()
+
+    ->paginate($perPage);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -27,7 +46,10 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name,
 
-            'slug' => Str::slug($request->name),
+            'slug' => SlugHelper::generate(
+                Category::class,
+                $request->name
+            ),
 
             'description' => $request->description,
 
@@ -47,20 +69,15 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $category->update([
-
-            'name' => $request->name,
-
-            'slug' => Str::slug($request->name),
-
+            'name'        => $request->name,
+            'slug'        => $request->slug,
             'description' => $request->description,
-
-            'status' => $request->boolean('status'),
-
+            'status'      => $request->boolean('status'),
         ]);
 
         return redirect()
-                ->route('admin.categories.index')
-                ->with('success','Category updated successfully.');
+            ->route('admin.categories.index')
+            ->with('success', 'Category updated successfully.');
     }
 
     public function destroy(Category $category)

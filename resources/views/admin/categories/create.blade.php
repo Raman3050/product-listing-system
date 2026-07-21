@@ -26,7 +26,8 @@
 
 @include('admin.categories._form', [
     'action' => route('admin.categories.store'),
-    'method' => 'POST'
+    'method' => 'POST',
+    'showSlug' => false,
 ])
 
 @endsection

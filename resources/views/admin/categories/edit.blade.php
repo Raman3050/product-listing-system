@@ -28,7 +28,8 @@
 @include('admin.categories._form',[
     'action'=>route('admin.categories.update',$category),
     'method'=>'PUT',
-    'category'=>$category
+    'category'=>$category,
+    'showSlug' => true,
 ])
 
 @endsection

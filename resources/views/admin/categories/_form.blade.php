@@ -32,6 +32,32 @@
 
             </div>
 
+            <!-- Slug -->
+            @if($showSlug)
+
+            <div class="mb-3">
+
+                <label for="slug" class="form-label">
+                    Slug
+                </label>
+
+                <input
+                    type="text"
+                    id="slug"
+                    name="slug"
+                    class="form-control @error('slug') is-invalid @enderror"
+                    value="{{ old('slug', $category->slug ?? '') }}">
+
+                @error('slug')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
+            @endif
+
             <!-- Description -->
             <div class="mb-3">
 

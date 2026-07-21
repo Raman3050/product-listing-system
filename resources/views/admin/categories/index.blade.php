@@ -24,6 +24,76 @@
 
 </div>
 
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <form method="GET" action="{{ route('admin.categories.index') }}">
+
+            <div class="row g-2 align-items-center">
+
+    <div class="col-md-5">
+
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search by category name or slug..."
+            value="{{ request('search') }}">
+
+    </div>
+
+    <div class="col-md-2">
+
+        <select name="per_page" class="form-select">
+
+            <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>
+                10
+            </option>
+
+            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>
+                25
+            </option>
+
+            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>
+                50
+            </option>
+
+            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>
+                100
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="col-auto">
+
+        <button type="submit" class="btn btn-primary">
+            Search
+        </button>
+
+    </div>
+
+    <div class="col-auto">
+
+        <a href="{{ route('admin.categories.index') }}"
+           class="btn btn-secondary">
+
+            Reset
+
+        </a>
+
+    </div>
+
+</div>
+
+        </form>
+
+    </div>
+
+</div>
+
 <div class="card shadow-sm">
     <div class="card-body">
 
@@ -110,7 +180,7 @@
 
             </table>
 
-            {{ $categories->links() }}
+            {{ $categories->appends(request()->query())->links() }}
 
         @endif
 

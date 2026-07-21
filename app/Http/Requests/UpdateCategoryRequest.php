@@ -21,12 +21,25 @@ class UpdateCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:150',
-                Rule::unique('categories','name')->ignore($category),
+                \Illuminate\Validation\Rule::unique('categories', 'name')->ignore($category),
             ],
 
-            'description' => 'nullable|string',
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('categories', 'slug')->ignore($category),
+            ],
 
-            'status' => 'nullable|boolean',
+            'description' => [
+                'nullable',
+                'string',
+            ],
+
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
         ];
     }
 }
