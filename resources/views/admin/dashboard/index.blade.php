@@ -16,7 +16,7 @@ $breadcrumbs = [
         <div>
             <h1 class="h3 mb-1">Dashboard</h1>
             <p class="text-muted mb-0">
-                Welcome to the Product Listing Admin Panel
+                Welcome to the Property Listing Admin Panel
             </p>
         </div>
     </div>
