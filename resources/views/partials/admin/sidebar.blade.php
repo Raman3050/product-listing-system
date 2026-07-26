@@ -2,7 +2,7 @@
 
     <div class="sidebar-logo">
 
-        <h4>Product Listing</h4>
+        <h4>Property Listing</h4>
 
     </div>
 
