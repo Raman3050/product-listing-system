@@ -40,7 +40,8 @@
     </li>
 
     <li>
-        <a href="#">
+        <a href="{{ route('admin.property-types.index') }}"
+            class="{{ request()->routeIs('admin.property-types.*') ? 'active' : '' }}">
             <i class="bi bi-house"></i>
             Property Types
         </a>
