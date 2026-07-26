@@ -6,33 +6,26 @@ use Illuminate\Support\Str;
 
 class SlugHelper
 {
-    /**
-     * Generate a unique slug.
-     *
-     * @param string $value
-     * @param string $modelClass
-     * @param string $column
-     * @return string
-     */
-    public static function generate(
-        string $value,
-        string $modelClass,
-        string $column = 'slug'
-    ): string {
-
-        $slug = Str::slug($value);
-
+    public static function generate(string $model, string $title, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
         $originalSlug = $slug;
 
-        $count = 1;
+        $counter = 1;
 
-        while (
-            $modelClass::where($column, $slug)->exists()
-        ) {
+        while (true) {
 
-            $slug = $originalSlug . '-' . $count;
+            $query = $model::where('slug', $slug);
 
-            $count++;
+            if ($ignoreId) {
+                $query->where('id', '!=', $ignoreId);
+            }
+
+            if (!$query->exists()) {
+                break;
+            }
+
+            $slug = $originalSlug . '-' . $counter++;
         }
 
         return $slug;

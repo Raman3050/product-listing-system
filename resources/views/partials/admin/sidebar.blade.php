@@ -8,88 +8,76 @@
 
     <ul class="sidebar-menu">
 
-    <li>
-        <a href="{{ route('admin.dashboard') }}"
-            class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-            <i class="bi bi-speedometer2"></i>
-            Dashboard
-        </a>
-    </li>
+        <li>
+            <a href="{{ route('admin.dashboard') }}"
+               class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
 
-    <li class="sidebar-heading mt-4">
-        Property Management
-    </li>
+                <i class="bi bi-speedometer2"></i>
 
-    <li>
-        <a href="#">
-            <i class="bi bi-buildings"></i>
-            Properties
-        </a>
-    </li>
+                <span>Dashboard</span>
 
-    <li class="sidebar-heading mt-4">
-        Master Data
-    </li>
+            </a>
+        </li>
 
-    <li>
-        <a href="{{ route('admin.property-categories.index') }}"
-            class="{{ request()->routeIs('admin.property-categories.*') ? 'active' : '' }}">
-            <i class="bi bi-house"></i>
-            Property Categories
-        </a>
-    </li>
+        <li>
 
-    <li>
-        <a href="{{ route('admin.property-types.index') }}"
-            class="{{ request()->routeIs('admin.property-types.*') ? 'active' : '' }}">
-            <i class="bi bi-house"></i>
-            Property Types
-        </a>
-    </li>
+            <a href="#">
 
-    <li>
-        <a href="#">
-            <i class="bi bi-building"></i>
-            Builders
-        </a>
-    </li>
+                <i class="bi bi-box-seam"></i>
 
-    <li>
-        <a href="#">
-            <i class="bi bi-stars"></i>
-            Amenities
-        </a>
-    </li>
+                Products
 
-    <li>
-        <a href="#">
-            <i class="bi bi-geo-alt"></i>
-            Locations
-        </a>
-    </li>
+            </a>
 
-    <li class="sidebar-heading mt-4">
-        Website
-    </li>
+        </li>
 
-    <li>
-        <a href="#">
-            <i class="bi bi-images"></i>
-            Banners
-        </a>
-    </li>
+        <li>
+            <a href="{{ route('admin.categories.index') }}"
+               class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
 
-    <li class="sidebar-heading mt-4">
-        Settings
-    </li>
+                <i class="bi bi-tags"></i>
 
-    <li>
-        <a href="#">
-            <i class="bi bi-gear"></i>
-            Settings
-        </a>
-    </li>
+                <span>Categories</span>
 
-</ul>
+            </a>
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-award"></i>
+
+                Brands
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-images"></i>
+
+                Banners
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="bi bi-gear"></i>
+
+                Settings
+
+            </a>
+
+        </li>
+
+    </ul>
 
 </aside>
