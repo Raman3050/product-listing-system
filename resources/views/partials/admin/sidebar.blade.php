@@ -8,77 +8,87 @@
 
     <ul class="sidebar-menu">
 
-        <li>
-            <a href="{{ route('admin.dashboard') }}"
-               class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+    <li>
+        <a href="{{ route('admin.dashboard') }}"
+            class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <i class="bi bi-speedometer2"></i>
+            Dashboard
+        </a>
+    </li>
 
-                <i class="bi bi-speedometer2"></i>
+    <li class="sidebar-heading mt-4">
+        Property Management
+    </li>
 
-                Dashboard
+    <li>
+        <a href="#">
+            <i class="bi bi-buildings"></i>
+            Properties
+        </a>
+    </li>
 
-            </a>
-        </li>
+    <li class="sidebar-heading mt-4">
+        Master Data
+    </li>
 
-        <li>
+    <li>
+        <a href="{{ route('admin.property-categories.index') }}"
+            class="{{ request()->routeIs('admin.property-categories.*') ? 'active' : '' }}">
+            <i class="bi bi-house"></i>
+            Property Categories
+        </a>
+    </li>
 
-            <a href="#">
+    <li>
+        <a href="#">
+            <i class="bi bi-house"></i>
+            Property Types
+        </a>
+    </li>
 
-                <i class="bi bi-box-seam"></i>
+    <li>
+        <a href="#">
+            <i class="bi bi-building"></i>
+            Builders
+        </a>
+    </li>
 
-                Products
+    <li>
+        <a href="#">
+            <i class="bi bi-stars"></i>
+            Amenities
+        </a>
+    </li>
 
-            </a>
+    <li>
+        <a href="#">
+            <i class="bi bi-geo-alt"></i>
+            Locations
+        </a>
+    </li>
 
-        </li>
+    <li class="sidebar-heading mt-4">
+        Website
+    </li>
 
-        <li>
+    <li>
+        <a href="#">
+            <i class="bi bi-images"></i>
+            Banners
+        </a>
+    </li>
 
-            <a href="#">
+    <li class="sidebar-heading mt-4">
+        Settings
+    </li>
 
-                <i class="bi bi-tags"></i>
+    <li>
+        <a href="#">
+            <i class="bi bi-gear"></i>
+            Settings
+        </a>
+    </li>
 
-                Categories
-
-            </a>
-
-        </li>
-
-        <li>
-
-            <a href="#">
-
-                <i class="bi bi-award"></i>
-
-                Brands
-
-            </a>
-
-        </li>
-
-        <li>
-
-            <a href="#">
-
-                <i class="bi bi-images"></i>
-
-                Banners
-
-            </a>
-
-        </li>
-
-        <li>
-
-            <a href="#">
-
-                <i class="bi bi-gear"></i>
-
-                Settings
-
-            </a>
-
-        </li>
-
-    </ul>
+</ul>
 
 </aside>
