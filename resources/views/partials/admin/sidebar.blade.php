@@ -62,7 +62,8 @@
     </li>
 
     <li>
-        <a href="#">
+        <a href="{{ route('admin.locations.index') }}"
+            class="{{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
             <i class="bi bi-geo-alt"></i>
             Locations
         </a>
