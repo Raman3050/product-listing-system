@@ -56,7 +56,8 @@
     </li>
 
     <li>
-        <a href="#">
+        <a href="{{ route('admin.amenities.index') }}"
+            class="{{ request()->routeIs('admin.amenities.*') ? 'active' : '' }}">
             <i class="bi bi-stars"></i>
             Amenities
         </a>
