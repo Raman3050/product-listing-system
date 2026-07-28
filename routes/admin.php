@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\BuilderController;
 use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProjectImageController;
+use App\Http\Controllers\Admin\UnitController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -59,3 +60,8 @@ Route::delete(
     'project-images/{projectImage}',
     [ProjectImageController::class, 'destroy']
 )->name('project-images.destroy');
+
+Route::resource(
+    'units',
+    UnitController::class
+);

@@ -23,4 +23,9 @@ class PropertyType extends Model
     {
         return $this->belongsTo(PropertyCategory::class);
     }
+
+    public function units()
+    {
+        return $this->hasMany(Unit::class);
+    }
 }

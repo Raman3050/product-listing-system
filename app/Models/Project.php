@@ -69,4 +69,9 @@ class Project extends Model
         return $this->belongsToMany(Amenity::class, 'amenity_project');
     }
 
+    public function units()
+    {
+        return $this->hasMany(Unit::class);
+    }
+
 }

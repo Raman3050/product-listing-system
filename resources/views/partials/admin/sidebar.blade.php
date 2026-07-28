@@ -37,7 +37,8 @@
     </li>
 
     <li>
-        <a href="#">
+        <a href="{{ route('admin.units.index') }}"
+            class="{{ request()->routeIs('admin.units.*') ? 'active' : '' }}">
             <i class="bi bi-building"></i>
             Units
         </a>
