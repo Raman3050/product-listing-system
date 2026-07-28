@@ -29,7 +29,8 @@
     </li>
 
     <li>
-        <a href="#">
+        <a href="{{ route('admin.project-images.index') }}"
+            class="{{ request()->routeIs('admin.project-images.*') ? 'active' : '' }}">
             <i class="bi bi-images"></i>
             Project Images
         </a>

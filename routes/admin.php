@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\BuilderController;
 use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ProjectImageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,3 +44,18 @@ Route::resource(
     'projects',
     ProjectController::class
 );
+
+Route::get(
+    'project-images',
+    [ProjectImageController::class, 'index']
+)->name('project-images.index');
+
+Route::post(
+    'project-images',
+    [ProjectImageController::class, 'store']
+)->name('project-images.store');
+
+Route::delete(
+    'project-images/{projectImage}',
+    [ProjectImageController::class, 'destroy']
+)->name('project-images.destroy');
