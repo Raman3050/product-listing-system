@@ -21,9 +21,24 @@
     </li>
 
     <li>
-        <a href="#">
+        <a href="{{ route('admin.projects.index') }}"
+        class="{{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
             <i class="bi bi-buildings"></i>
-            Properties
+            Projects
+        </a>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="bi bi-images"></i>
+            Project Images
+        </a>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="bi bi-building"></i>
+            Units
         </a>
     </li>
 

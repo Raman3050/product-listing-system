@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PropertyTypeController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\BuilderController;
 use App\Http\Controllers\Admin\AmenityController;
+use App\Http\Controllers\Admin\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,4 +37,9 @@ Route::resource(
 Route::resource(
     'amenities',
     AmenityController::class
+);
+
+Route::resource(
+    'projects',
+    ProjectController::class
 );

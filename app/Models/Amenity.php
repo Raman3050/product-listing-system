@@ -17,4 +17,10 @@ class Amenity extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 }
+
