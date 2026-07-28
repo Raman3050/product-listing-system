@@ -51,4 +51,10 @@ class Unit extends Model
     {
         return $this->belongsTo(PropertyType::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(UnitImage::class);
+    }
+
 }

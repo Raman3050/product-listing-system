@@ -44,6 +44,14 @@
         </a>
     </li>
 
+    <li>
+        <a href="{{ route('admin.unit-images.index') }}"
+            class="{{ request()->routeIs('admin.unit-images.*') ? 'active' : '' }}">
+            <i class="bi bi-images"></i>
+            Unit Images
+        </a>
+    </li>
+
     <li class="sidebar-heading mt-4">
         Master Data
     </li>

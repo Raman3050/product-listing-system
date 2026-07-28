@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AmenityController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProjectImageController;
 use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\UnitImageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,22 +47,21 @@ Route::resource(
     ProjectController::class
 );
 
-Route::get(
-    'project-images',
-    [ProjectImageController::class, 'index']
-)->name('project-images.index');
-
-Route::post(
-    'project-images',
-    [ProjectImageController::class, 'store']
-)->name('project-images.store');
-
-Route::delete(
-    'project-images/{projectImage}',
-    [ProjectImageController::class, 'destroy']
-)->name('project-images.destroy');
+Route::resource('project-images', ProjectImageController::class)
+    ->only([
+        'index',
+        'store',
+        'destroy'
+    ]);
 
 Route::resource(
     'units',
     UnitController::class
 );
+
+Route::resource('unit-images', UnitImageController::class)
+    ->only([
+        'index',
+        'store',
+        'destroy'
+    ]);

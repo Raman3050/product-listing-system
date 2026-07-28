@@ -527,10 +527,11 @@
                     Meta Description
                 </label>
 
-                <textarea
+                <input
+                    type="text"
                     name="meta_description"
-                    rows="4"
-                    class="form-control @error('meta_description') is-invalid @enderror">{{ old('meta_description', $unit->meta_description ?? '') }}</textarea>
+                    class="form-control @error('meta_description') is-invalid @enderror"
+                    value="{{ old('meta_description', $unit->meta_description ?? '') }}">
 
                 @error('meta_description')
                     <div class="invalid-feedback">
@@ -547,10 +548,11 @@
                     Meta Keywords
                 </label>
 
-                <textarea
+                <input
+                    type="text"
                     name="meta_keywords"
-                    rows="3"
-                    class="form-control @error('meta_keywords') is-invalid @enderror">{{ old('meta_keywords', $unit->meta_keywords ?? '') }}</textarea>
+                    class="form-control @error('meta_keywords') is-invalid @enderror"
+                    value="{{ old('meta_keywords', $unit->meta_keywords ?? '') }}">
 
                 @error('meta_keywords')
                     <div class="invalid-feedback">
