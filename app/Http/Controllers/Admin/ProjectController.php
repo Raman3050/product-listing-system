@@ -278,13 +278,14 @@ class ProjectController extends Controller
 
     private function uploadFile($file, string $directory): string
     {
-        return $file->store($directory, 'public');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        return $file->storeAs($directory, $filename, 'r2');
     }
 
     private function deleteFile(?string $path): void
     {
-        if ($path && Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
+        if ($path && Storage::disk('r2')->exists($path)) {
+            Storage::disk('r2')->delete($path);
         }
     }
 }

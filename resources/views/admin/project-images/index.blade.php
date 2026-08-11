@@ -129,7 +129,7 @@
 
                             <div class="card">
 
-                                <img src="{{ asset('storage/' . $image->image) }}" class="card-img-top"
+                                <img src="{{ Storage::disk('r2')->url($image->image) }}" class="card-img-top"
                                     style="height:220px; object-fit:cover;">
 
                                 <div class="card-body text-center">

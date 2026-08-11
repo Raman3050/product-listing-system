@@ -381,7 +381,7 @@
                 @enderror
                 @if(isset($project) && $project->logo)
                     <div class="mt-2">
-                        <img src="{{ Storage::url($project->logo) }}" alt="Logo" class="img-thumbnail" width="100">
+                        <img src="{{ Storage::disk('r2')->url($project->logo) }}" alt="Logo" class="img-thumbnail" width="100">
                     </div>
                 @endif
             </div>
@@ -394,7 +394,7 @@
                 @enderror
                 @if(isset($project) && $project->featured_image)
                     <div class="mt-2">
-                        <img src="{{ Storage::url($project->featured_image) }}" alt="Featured Image" class="img-thumbnail" width="100">
+                        <img src="{{ Storage::disk('r2')->url($project->featured_image) }}" alt="Featured Image" class="img-thumbnail" width="100">
                     </div>
                 @endif
             </div>
@@ -407,7 +407,7 @@
                 @enderror
                 @if(isset($project) && $project->brochure)
                     <div class="mt-2">
-                        <a href="{{ Storage::url($project->brochure) }}" target="_blank" class="btn btn-sm btn-info"><i class="bi bi-file-earmark-pdf"></i> View Current</a>
+                        <a href="{{ Storage::disk('r2')->url($project->brochure) }}" target="_blank" class="btn btn-sm btn-info"><i class="bi bi-file-earmark-pdf"></i> View Current</a>
                     </div>
                 @endif
             </div>

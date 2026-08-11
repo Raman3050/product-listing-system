@@ -88,13 +88,14 @@ class ProjectImageController extends Controller
 
     private function uploadFile($file)
     {
-        return $file->store('projects/gallery', 'public');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        return $file->storeAs('projects/gallery', $filename, 'r2');
     }
 
     private function deleteFile(?string $path): void
     {
-        if ($path && Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
+        if ($path && Storage::disk('r2')->exists($path)) {
+            Storage::disk('r2')->delete($path);
         }
     }
 }
