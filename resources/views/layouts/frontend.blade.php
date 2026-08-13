@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
-@include('partials.frontend.head')
-
+<head>
+    @include('partials.frontend.head')
+</head>
 <body>
-
     @include('partials.frontend.navbar')
 
     @yield('hero')
 
-    <main>
-
-        @yield('content')
-
-    </main>
+    @yield('content')
 
     @include('partials.frontend.footer')
 
     @include('partials.frontend.scripts')
-
 </body>
 </html>

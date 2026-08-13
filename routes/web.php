@@ -3,10 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
-
-
+use App\Http\Controllers\Frontend\AboutController;
+use App\Http\Controllers\Frontend\CatalogController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/catalog/{slug?}', [CatalogController::class, 'show'])->name('catalog.show');
 
 Route::get('/login-test', function () {
     return view('admin.auth.login');
