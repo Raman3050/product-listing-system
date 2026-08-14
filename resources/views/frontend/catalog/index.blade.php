@@ -2,21 +2,27 @@
 
 @section('content')
 
+@php
+    use Illuminate\Support\Facades\Storage;
+
+    $pageDetails = $project->pageDetails;
+
+    $heroImage = Storage::url($project->featured_image);
+@endphp
 
 
 <!-- HERO -->
-<section class="hero" style="background-image: url('{{ asset('frontend_assets/images/aipl-banner.webp') }}');">
+<section class="hero" style="background-image: url('{{ $heroImage }}');">
   <div class="container hero-grid">
 
-    
 
     <div class="hero-copy pt-3 pt-lg-4">
-      <div class="eyebrow mb-2">AIPL · Pre-Leased Commercial</div>
-      <h1>   AIPL Projects <br class="d-none d-md-block"> </h1>
-      <p>Invest in retail shops, food courts & office spaces leased to Starbucks, Haldiram’s, McDonald’s & more with great rental income.</p>
+      <div class="eyebrow mb-2">{{ $pageDetails?->first_yellow_heading }}</div>
+      <h1>   {{ $pageDetails?->project_name }} <br class="d-none d-md-block"> </h1>
+      <p>{{ $pageDetails?->description }}</p>
 
       <div class="hero-inline-stat">
-        <span class="v">₹63.87 L*</span>
+        <span class="v">{{ $pageDetails?->amount_start }}</span>
         <span class="s">Investment starts @</span>
         <!-- <span class="divider"></span>
         <span class="v">Day 1*</span>
@@ -31,7 +37,7 @@
 
     <!-- Directory rail (signature element) -->
     <aside class="directory-rail d-none">
-      <div class="rail-label">All AIPL Projects</div>
+      <div class="rail-label">All {{ $project->name }}</div>
       <a href="#" class="directory-item active"><span class="dot"></span>Joy Central<small>Sector 65 · Retail + F&amp;B</small></a>
       <a href="#" class="directory-item"><span class="dot"></span>Joy Square<small>Sector 65 · Office Spaces</small></a>
       <a href="#" class="directory-item"><span class="dot"></span>Joy Street<small>Sector 65 · High Street</small></a>
@@ -45,10 +51,10 @@
 <section class="stat-strip">
   <div class="container">
     <div class="stat-strip-grid">
-      <div class="stat-strip-item"><div class="num">Day 1*</div><div class="lbl">Monthly payout</div></div>
-      <div class="stat-strip-item"><div class="num">50+</div><div class="lbl">Top brands leased</div></div>
-      <div class="stat-strip-item"><div class="num">₹63.87L*</div><div class="lbl">Investment starts @</div></div>
-      <div class="stat-strip-item"><div class="num">15 Yr*</div><div class="lbl">Lease lock-in</div></div>
+      <div class="stat-strip-item"><div class="num">{{ $pageDetails?->stat_1_value }}</div><div class="lbl">{{ $pageDetails?->stat_1_type }}</div></div>
+      <div class="stat-strip-item"><div class="num">{{ $pageDetails?->stat_2_value }}</div><div class="lbl">{{ $pageDetails?->stat_2_type }}</div></div>
+      <div class="stat-strip-item"><div class="num">{{ $pageDetails?->stat_3_value }}</div><div class="lbl">{{ $pageDetails?->stat_3_type }}</div></div>
+      <div class="stat-strip-item"><div class="num">{{ $pageDetails?->stat_4_value }}</div><div class="lbl">{{ $pageDetails?->stat_4_type }}</div></div>
     </div>
   </div>
 </section>
@@ -56,16 +62,29 @@
 <!-- Brand strip: logo-style lockups instead of plain text chips -->
 <section class="brand-strip">
   <div class="container">
-    <div class="brand-strip-label">Co-tenants at AIPL</div>
+    <div class="brand-strip-label">Co-tenants at {{ $project->name }}</div>
     <div class="brand-logo-row">
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/Chaayos-tea.png') }}" alt=""></div>
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/hdfc-bank.png') }}" alt=""></div>
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/calvin_klein.png') }}" alt=""></div>
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/Benetton.png') }}" alt=""></div>
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/geetanjali.png') }}" alt=""></div>
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/rare-rabbit.png') }}" alt=""></div>
-      <div class="brand-logo"><img src="{{ asset('frontend_assets/images/project-present-brands/start-bucks.png') }}" alt=""></div>
-      
+      @foreach($pageDetails?->tenants ?? [] as $tenant)
+
+        <div class="brand-logo">
+
+          @if($tenant->logo)
+
+            <img
+              src="{{ Storage::url($tenant->logo) }}"
+              alt="{{ $tenant->name }}">
+
+          @else
+
+            <span>
+              {{ $tenant->name }}
+            </span>
+
+          @endif
+
+        </div>
+
+      @endforeach
     </div>
   </div>
 </section>
@@ -85,7 +104,7 @@
       </div>
 
       <h2 class="inner-section-title">Invest in India's biggest brand names</h2>
-      <p class="section-sub">6 pre-leased units currently open for investment at Joy Central.</p>
+      <p class="section-sub">{{ $project->units->count() }} pre-leased units currently open for investment at {{ $project->name }}.</p>
 
       <div class="filter-tabs" id="filterTabs">
         <button class="filter-pill active" data-filter="all">All</button>
@@ -98,7 +117,7 @@
       </div>
 
       <div class="toolbar">
-        <div class="result-count"><span id="resultCount">6</span> units found</div>
+        <div class="result-count"><span id="resultCount">{{ $project->units->count() }}</span> units found</div>
         <div class="d-flex gap-2 align-items-center">
           <select class="sort-select">
             <option>Sort: Featured</option>
@@ -115,185 +134,160 @@
 
       <div class="cards-grid" id="cardsGrid">
 
-        <!-- Card 1 -->
-        <div class="prop-card" data-cat="food">
-          <div class="prop-media">
-            <div class="top-row">
-              <div class="d-flex gap-2"><span class="badge-status">Pre-Leased</span><span class="badge-cat">Food &amp; Bev</span></div>
-              <div>
-                <img src="{{ asset('frontend_assets/images/projects/aipl-projects/joy-central.png') }}" alt="" srcset="">
+        @forelse($project->units as $unit)
+
+          @php
+            $unitImage = $unit->images->first();
+
+            $imageUrl = $unitImage
+              ? Storage::url($unitImage->image)
+              : asset('frontend_assets/images/projects/aipl-projects/joy-central.png');
+          @endphp
+
+          <div
+            class="prop-card"
+            data-cat="{{ $unit->tenant?->business_category ?? '' }}">
+
+            <div class="prop-media">
+
+              <div class="top-row">
+
+                <div class="d-flex gap-2">
+
+                  <span class="badge-status">
+                    {{ $unit->lease_status ?: 'Available' }}
+                  </span>
+
+                  <span class="badge-cat">
+                    {{ $unit->tenant?->business_category ?? '—' }}
+                  </span>
+
+                </div>
+
+                <div>
+                  <img
+                    src="{{ $imageUrl }}"
+                    alt="{{ $unit->name }}">
+                </div>
+
               </div>
-            </div>
-            <div class="brand-plaque">
-                <img src="{{ asset('frontend_assets/images/project-present-brands/Chaayos-tea.png') }}" alt="">
-              <!-- <span class="name">Chaayos</span> -->
-              <span class="loc"><i class="bi bi-geo-alt"></i> Sector 65, Gurugram</span>
-            </div>
-          </div>
-          <div class="prop-body">
-            <div class="metric-row">
-              <div class="metric"><div class="v">5.64%</div><div class="k">Annual ROI</div></div>
-              <div class="metric"><div class="v">Pre-Leased</div><div class="k">Lease</div></div>
-              <div class="metric"><div class="v">₹14.58L</div><div class="k">Up to / month</div></div>
-            </div>
-            <p class="prop-desc">Ground-floor retail unit leased to Chaayos with a running 15-year lock-in and annual rent escalation.</p>
-            <div class="card-actions">
-              <div class="invest-tag"><span>Investment starts @</span> ₹63 Lac</div>
-              <button class="btn-view">View Details</button>
-            </div>
-          </div>
-        </div>
 
-        <!-- Card 2 -->
-        <div class="prop-card" data-cat="bank">
-          <div class="prop-media">
-            <div class="top-row">
-              <div class="d-flex gap-2"><span class="badge-status">Pre-Leased</span><span class="badge-cat">Bank</span></div>
-              <div>
-                <img src="{{ asset('frontend_assets/images/projects/aipl-projects/joy-central.png') }}" alt="" srcset="">
+              <div class="brand-plaque">
+
+                @if($unit->tenant?->logo)
+
+                  <img
+                    src="{{ Storage::url($unit->tenant->logo) }}"
+                    alt="{{ $unit->tenant->name }}">
+
+                @else
+
+                  <span class="name">
+                    {{ $unit->tenant?->name ?? 'Available Unit' }}
+                  </span>
+
+                @endif
+
+                <span class="loc">
+
+                  <i class="bi bi-geo-alt"></i>
+
+                  {{ $project->location?->name ?? '' }}
+
+                </span>
+
               </div>
-            </div>
-            <div class="brand-plaque">
-                <img src="{{ asset('frontend_assets/images/project-present-brands/hdfc-bank.png') }}" alt="">
 
-              <!-- <span class="name">HDFC Bank</span> -->
-              <span class="loc"><i class="bi bi-geo-alt"></i> Sector 65, Gurugram</span>
             </div>
-          </div>
-          <div class="prop-body">
-            <div class="metric-row">
-              <div class="metric"><div class="v">6.20%</div><div class="k">Annual ROI</div></div>
-              <div class="metric"><div class="v">Pre-Leased</div><div class="k">Lease</div></div>
-              <div class="metric"><div class="v">₹18.2L</div><div class="k">Up to / month</div></div>
-            </div>
-            <p class="prop-desc">Corner unit branch leased to HDFC Bank — high footfall frontage facing the main plaza.</p>
-            <div class="card-actions">
-              <div class="invest-tag"><span>Investment starts @</span> ₹78 Lac</div>
-              <button class="btn-view">View Details</button>
-            </div>
-          </div>
-        </div>
 
-        <!-- Card 3 -->
-        <div class="prop-card" data-cat="retail">
-          <div class="prop-media">
-            <div class="top-row">
-              <div class="d-flex gap-2"><span class="badge-status">Pre-Leased</span><span class="badge-cat">Retail</span></div>
-              <div>
-                <img src="{{ asset('frontend_assets/images/projects/aipl-projects/joy-central.png') }}" alt="" srcset="">
+            <div class="prop-body">
+
+              <div class="metric-row">
+
+                <div class="metric">
+                  <div class="v">
+                    {{ $unit->annual_roi !== null
+                        ? number_format($unit->annual_roi, 2) . '%'
+                        : '—'
+                    }}
+                  </div>
+                  <div class="k">Annual ROI</div>
+                </div>
+
+                <div class="metric">
+                  <div class="v">
+                    {{ $unit->lease_status ?: 'Available' }}
+                  </div>
+                  <div class="k">Lease</div>
+                </div>
+
+                <div class="metric">
+                  <div class="v">
+                    @if($unit->monthly_rental !== null)
+                      ₹{{ number_format($unit->monthly_rental / 100000, 2) }} L
+                    @else
+                      —
+                    @endif
+                  </div>
+                  <div class="k">Up to / month</div>
+                </div>
+
               </div>
-            </div>
-            <div class="brand-plaque">
-                <img src="{{ asset('frontend_assets/images/project-present-brands/calvin_klein.png') }}" alt="">
 
-              <!-- <span class="name">Calvin Klein</span> -->
-              <span class="loc"><i class="bi bi-geo-alt"></i> Sector 65, Gurugram</span>
-            </div>
-          </div>
-          <div class="prop-body">
-            <div class="metric-row">
-              <div class="metric"><div class="v">5.80%</div><div class="k">Annual ROI</div></div>
-              <div class="metric"><div class="v">Pre-Leased</div><div class="k">Lease</div></div>
-              <div class="metric"><div class="v">₹22L</div><div class="k">Up to / month</div></div>
-            </div>
-            <p class="prop-desc">First-floor flagship unit leased to Calvin Klein within the fashion wing of the mall.</p>
-            <div class="card-actions">
-              <div class="invest-tag"><span>Investment starts @</span> ₹95 Lac</div>
-              <button class="btn-view">View Details</button>
-            </div>
-          </div>
-        </div>
+              <p class="prop-desc">
+                {{ $unit->description }}
+              </p>
 
-        <!-- Card 4 -->
-        <div class="prop-card" data-cat="retail">
-          <div class="prop-media">
-            <div class="top-row">
-              <div class="d-flex gap-2"><span class="badge-status">Pre-Leased</span><span class="badge-cat">Retail</span></div>
-              <div>
-                <img src="{{ asset('frontend_assets/images/projects/aipl-projects/joy-central.png') }}" alt="" srcset="">
+              <div class="card-actions">
+
+                <div class="invest-tag">
+
+                  <span>
+                    Investment starts @
+                  </span>
+
+                  @if($unit->price_on_request)
+
+                    Price on Request
+
+                  @elseif($unit->price !== null)
+
+                    ₹{{ number_format($unit->price / 100000) }} Lac
+
+                  @else
+
+                    —
+
+                  @endif
+
+                </div>
+
+                <a href="{{ route('catalog.unit.show', [$project->slug, $unit->slug]) }}" class="btn-view">
+                  View Details
+                </a>
+
               </div>
-            </div>
-            <div class="brand-plaque">
-                <img src="{{ asset('frontend_assets/images/project-present-brands/Benetton.png') }}" alt="">
 
-              <!-- <span class="name">Benetton</span> -->
-              <span class="loc"><i class="bi bi-geo-alt"></i> Sector 65, Gurugram</span>
             </div>
-          </div>
-          <div class="prop-body">
-            <div class="metric-row">
-              <div class="metric"><div class="v">5.50%</div><div class="k">Annual ROI</div></div>
-              <div class="metric"><div class="v">Pre-Leased</div><div class="k">Lease</div></div>
-              <div class="metric"><div class="v">₹16.5L</div><div class="k">Up to / month</div></div>
-            </div>
-            <p class="prop-desc">Mid-mall unit leased to United Colors of Benetton, adjacent to the central atrium.</p>
-            <div class="card-actions">
-              <div class="invest-tag"><span>Investment starts @</span> ₹71 Lac</div>
-              <button class="btn-view">View Details</button>
-            </div>
-          </div>
-        </div>
 
-        <!-- Card 5 -->
-        <div class="prop-card" data-cat="lifestyle">
-          <div class="prop-media">
-            <div class="top-row">
-              <div class="d-flex gap-2"><span class="badge-status">Pre-Leased</span><span class="badge-cat">Lifestyle</span></div>
-              <div>
-                <img src="{{ asset('frontend_assets/images/projects/aipl-projects/joy-central.png') }}" alt="" srcset="">
-              </div>
-            </div>
-            <div class="brand-plaque">
-                <img src="{{ asset('frontend_assets/images/project-present-brands/geetanjali.png') }}" alt="">
+          </div>
 
-              <!-- <span class="name">Geetanjali Salon</span> -->
-              <span class="loc"><i class="bi bi-geo-alt"></i> Sector 65, Gurugram</span>
-            </div>
-          </div>
-          <div class="prop-body">
-            <div class="metric-row">
-              <div class="metric"><div class="v">6.00%</div><div class="k">Annual ROI</div></div>
-              <div class="metric"><div class="v">Pre-Leased</div><div class="k">Lease</div></div>
-              <div class="metric"><div class="v">₹13.2L</div><div class="k">Up to / month</div></div>
-            </div>
-            <p class="prop-desc">Second-floor wellness unit leased to Geetanjali Salon within the lifestyle & services wing.</p>
-            <div class="card-actions">
-              <div class="invest-tag"><span>Investment starts @</span> ₹58 Lac</div>
-              <button class="btn-view">View Details</button>
-            </div>
-          </div>
-        </div>
+        @empty
 
-        <!-- Card 6 -->
-        <div class="prop-card" data-cat="retail">
-          <div class="prop-media">
-            <div class="top-row">
-              <div class="d-flex gap-2"><span class="badge-status">Pre-Leased</span><span class="badge-cat">Retail</span></div>
-              <div>
-                <img src="{{ asset('frontend_assets/images/projects/aipl-projects/joy-central.png') }}" alt="" srcset="">
-              </div>
-            </div>
-            <div class="brand-plaque">
-                <img src="{{ asset('frontend_assets/images/project-present-brands/rare-rabbit.png') }}" alt="">
-              <!-- <span class="name">Rare Rabbit</span> -->
-              <span class="loc"><i class="bi bi-geo-alt"></i> Sector 65, Gurugram</span>
-            </div>
-          </div>
-          <div class="prop-body">
-            <div class="metric-row">
-              <div class="metric"><div class="v">5.90%</div><div class="k">Annual ROI</div></div>
-              <div class="metric"><div class="v">Pre-Leased</div><div class="k">Lease</div></div>
-              <div class="metric"><div class="v">₹20L</div><div class="k">Up to / month</div></div>
-            </div>
-            <p class="prop-desc">Ground-floor menswear unit leased to Rare Rabbit, facing the main entrance plaza.</p>
-            <div class="card-actions">
-              <div class="invest-tag"><span>Investment starts @</span> ₹88 Lac</div>
-              <button class="btn-view">View Details</button>
-            </div>
-          </div>
-        </div>
+          <div class="col-12 text-center py-5">
 
-        
+            <i
+              class="bi bi-search"
+              style="font-size:2rem; color:var(--ink-soft);">
+            </i>
+
+            <p class="mt-2 mb-0 fw-semibold">
+              No units available
+            </p>
+
+          </div>
+
+        @endforelse
 
       </div>
 
@@ -310,7 +304,7 @@
 
         <div class="invest-banner">
           <div class="lbl">Investment starts @</div>
-          <div class="val">₹63.87 L*</div>
+          <div class="val">{{ $pageDetails?->amount_start }}</div>
         </div>
 
         <div class="panel">
@@ -403,15 +397,4 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-    
 @endsection

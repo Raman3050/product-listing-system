@@ -20,49 +20,122 @@ class StoreUnitRequest extends FormRequest
     {
         return [
 
-            'project_id' => ['required', 'exists:projects,id'],
+            'project_id' => [
+                'required',
+                'exists:projects,id',
+            ],
 
-            'property_type_id' => ['required', 'exists:property_types,id'],
+            'property_type_id' => [
+                'required',
+                'exists:property_types,id',
+            ],
 
-            'name' => ['required', 'max:255'],
+            'tenant_id' => [
+                'nullable',
+                'exists:tenants,id',
+            ],
 
-            'slug' => ['nullable', 'unique:units,slug'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
 
-            'price' => ['nullable', 'numeric'],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:units,slug',
+            ],
 
-            'price_on_request' => ['nullable', 'boolean'],
+            'price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
 
-            'booking_amount' => ['nullable', 'numeric'],
+            'price_on_request' => [
+                'nullable',
+                'boolean',
+            ],
 
-            'carpet_area' => ['nullable', 'numeric'],
+            'annual_roi' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                'max:100',
+            ],
 
-            'builtup_area' => ['nullable', 'numeric'],
+            'lease_status' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
 
-            'super_area' => ['nullable', 'numeric'],
+            'lock_in_years' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
 
-            'area_unit' => ['nullable'],
+            'monthly_rental' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
 
-            'bedrooms' => ['nullable', 'integer'],
+            'minimum_rental' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
 
-            'bathrooms' => ['nullable', 'integer'],
+            'floor_size' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
 
-            'balconies' => ['nullable', 'integer'],
+            'floor_size_unit' => [
+                'nullable',
+                'string',
+                'max:50',
+            ],
 
-            'floor' => ['nullable', 'integer'],
+            'description' => [
+                'nullable',
+                'string',
+            ],
 
-            'total_floors' => ['nullable', 'integer'],
+            'meta_title' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
 
-            'facing' => ['nullable'],
+            'meta_description' => [
+                'nullable',
+                'string',
+            ],
 
-            'description' => ['nullable'],
+            'meta_keywords' => [
+                'nullable',
+                'string',
+            ],
 
-            'meta_title' => ['nullable'],
+            'features' => [
+                'nullable',
+                'array',
+            ],
 
-            'meta_description' => ['nullable'],
+            'features.*' => [
+                'exists:unit_features,id',
+            ],
 
-            'meta_keywords' => ['nullable'],
-
-            'status' => ['nullable', 'boolean'],
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
 
         ];
     }

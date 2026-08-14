@@ -27,7 +27,12 @@
 
                         <option
                             value="{{ $project->id }}"
-                            @selected(old('project_id', $unit->project_id ?? '') == $project->id)>
+                            @selected(
+                                old(
+                                    'project_id',
+                                    $unit->project_id ?? ''
+                                ) == $project->id
+                            )>
 
                             {{ $project->name }}
 
@@ -44,6 +49,7 @@
                 @enderror
 
             </div>
+
 
             {{-- Property Type --}}
             <div class="col-md-6 mb-3">
@@ -64,7 +70,12 @@
 
                         <option
                             value="{{ $propertyType->id }}"
-                            @selected(old('property_type_id', $unit->property_type_id ?? '') == $propertyType->id)>
+                            @selected(
+                                old(
+                                    'property_type_id',
+                                    $unit->property_type_id ?? ''
+                                ) == $propertyType->id
+                            )>
 
                             {{ $propertyType->name }}
 
@@ -81,6 +92,50 @@
                 @enderror
 
             </div>
+
+
+            {{-- Tenant / Brand --}}
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Tenant / Brand
+                </label>
+
+                <select
+                    name="tenant_id"
+                    class="form-select @error('tenant_id') is-invalid @enderror">
+
+                    <option value="">
+                        Select Tenant / Brand
+                    </option>
+
+                    @foreach($tenants as $tenant)
+
+                        <option
+                            value="{{ $tenant->id }}"
+                            @selected(
+                                old(
+                                    'tenant_id',
+                                    $unit->tenant_id ?? ''
+                                ) == $tenant->id
+                            )>
+
+                            {{ $tenant->name }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+                @error('tenant_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
 
             {{-- Unit Name --}}
             <div class="col-md-6 mb-3">
@@ -103,6 +158,7 @@
 
             </div>
 
+
             {{-- Slug --}}
             <div class="col-md-6 mb-3">
 
@@ -122,7 +178,12 @@
                     </div>
                 @enderror
 
+                <small class="text-muted">
+                    Leave blank to generate automatically.
+                </small>
+
             </div>
+
 
             {{-- Status --}}
             <div class="col-md-6 mb-3">
@@ -139,7 +200,12 @@
                         id="status"
                         name="status"
                         value="1"
-                        @checked(old('status', $unit->status ?? true))>
+                        @checked(
+                            old(
+                                'status',
+                                $unit->status ?? true
+                            )
+                        )>
 
                     <label
                         class="form-check-label"
@@ -191,27 +257,6 @@
 
             </div>
 
-            {{-- Booking Amount --}}
-            <div class="col-md-4 mb-3">
-
-                <label class="form-label">
-                    Booking Amount
-                </label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    name="booking_amount"
-                    class="form-control @error('booking_amount') is-invalid @enderror"
-                    value="{{ old('booking_amount', $unit->booking_amount ?? '') }}">
-
-                @error('booking_amount')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-
-            </div>
 
             {{-- Price On Request --}}
             <div class="col-md-4 mb-3">
@@ -228,7 +273,12 @@
                         id="price_on_request"
                         name="price_on_request"
                         value="1"
-                        @checked(old('price_on_request', $unit->price_on_request ?? false))>
+                        @checked(
+                            old(
+                                'price_on_request',
+                                $unit->price_on_request ?? false
+                            )
+                        )>
 
                     <label
                         class="form-check-label"
@@ -251,206 +301,336 @@
 <div class="card shadow-sm mb-4">
 
     <div class="card-header">
-        <h5 class="mb-0">Specifications</h5>
+        <h5 class="mb-0">Investment Information</h5>
     </div>
 
     <div class="card-body">
 
         <div class="row">
 
-            {{-- Carpet Area --}}
-            <div class="col-md-3 mb-3">
+            {{-- Annual ROI --}}
+            <div class="col-md-4 mb-3">
 
-                <label class="form-label">Carpet Area</label>
+                <label class="form-label">
+                    Annual ROI (%)
+                </label>
 
                 <input
                     type="number"
                     step="0.01"
-                    name="carpet_area"
-                    class="form-control @error('carpet_area') is-invalid @enderror"
-                    value="{{ old('carpet_area', $unit->carpet_area ?? '') }}">
+                    min="0"
+                    max="100"
+                    name="annual_roi"
+                    class="form-control @error('annual_roi') is-invalid @enderror"
+                    value="{{ old('annual_roi', $unit->annual_roi ?? '') }}"
+                    placeholder="e.g. 5.64">
 
-                @error('carpet_area')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                @error('annual_roi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @enderror
 
             </div>
 
-            {{-- Built-up Area --}}
-            <div class="col-md-3 mb-3">
 
-                <label class="form-label">Built-up Area</label>
+            {{-- Lease Status --}}
+            <div class="col-md-4 mb-3">
 
-                <input
-                    type="number"
-                    step="0.01"
-                    name="builtup_area"
-                    class="form-control @error('builtup_area') is-invalid @enderror"
-                    value="{{ old('builtup_area', $unit->builtup_area ?? '') }}">
+                <label class="form-label">
+                    Lease Status
+                </label>
 
-                @error('builtup_area')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                <select
+                    name="lease_status"
+                    class="form-select @error('lease_status') is-invalid @enderror">
+
+                    <option value="">
+                        Select Lease Status
+                    </option>
+
+                    <option
+                        value="Pre-Leased"
+                        @selected(
+                            old(
+                                'lease_status',
+                                $unit->lease_status ?? ''
+                            ) === 'Pre-Leased'
+                        )>
+
+                        Pre-Leased
+
+                    </option>
+
+                    <option
+                        value="Vacant"
+                        @selected(
+                            old(
+                                'lease_status',
+                                $unit->lease_status ?? ''
+                            ) === 'Vacant'
+                        )>
+
+                        Vacant
+
+                    </option>
+
+                    <option
+                        value="Available"
+                        @selected(
+                            old(
+                                'lease_status',
+                                $unit->lease_status ?? ''
+                            ) === 'Available'
+                        )>
+
+                        Available
+
+                    </option>
+
+                </select>
+
+                @error('lease_status')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @enderror
 
             </div>
 
-            {{-- Super Area --}}
-            <div class="col-md-3 mb-3">
 
-                <label class="form-label">Super Area</label>
+            {{-- Lock-in --}}
+            <div class="col-md-4 mb-3">
+
+                <label class="form-label">
+                    Lock-in Period (Years)
+                </label>
+
+                <input
+                    type="number"
+                    min="0"
+                    name="lock_in_years"
+                    class="form-control @error('lock_in_years') is-invalid @enderror"
+                    value="{{ old('lock_in_years', $unit->lock_in_years ?? '') }}">
+
+                @error('lock_in_years')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
+
+            {{-- Monthly Rental --}}
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Monthly Rental
+                </label>
 
                 <input
                     type="number"
                     step="0.01"
-                    name="super_area"
-                    class="form-control @error('super_area') is-invalid @enderror"
-                    value="{{ old('super_area', $unit->super_area ?? '') }}">
+                    min="0"
+                    name="monthly_rental"
+                    class="form-control @error('monthly_rental') is-invalid @enderror"
+                    value="{{ old('monthly_rental', $unit->monthly_rental ?? '') }}">
 
-                @error('super_area')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                @error('monthly_rental')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
+
+            {{-- Minimum Rental --}}
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Minimum Rental
+                </label>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    name="minimum_rental"
+                    class="form-control @error('minimum_rental') is-invalid @enderror"
+                    value="{{ old('minimum_rental', $unit->minimum_rental ?? '') }}">
+
+                @error('minimum_rental')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+        <h5 class="mb-0">Unit Size</h5>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            {{-- Floor Size / Area --}}
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Floor Size / Area
+                </label>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    name="floor_size"
+                    class="form-control @error('floor_size') is-invalid @enderror"
+                    value="{{ old('floor_size', $unit->floor_size ?? '') }}"
+                    placeholder="e.g. 1000">
+
+                @error('floor_size')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @enderror
 
             </div>
 
             {{-- Area Unit --}}
-            <div class="col-md-3 mb-3">
+            <div class="col-md-6 mb-3">
 
-                <label class="form-label">Area Unit</label>
+                <label class="form-label">
+                    Area Unit
+                </label>
 
                 <select
-                    name="area_unit"
-                    class="form-select @error('area_unit') is-invalid @enderror">
+                    name="floor_size_unit"
+                    class="form-select @error('floor_size_unit') is-invalid @enderror">
 
-                    <option value="">Select Unit</option>
+                    <option value="">
+                        Select Unit
+                    </option>
 
-                    <option value="Sq. Ft." @selected(old('area_unit', $unit->area_unit ?? '') == 'Sq. Ft.')>Sq. Ft.</option>
+                    <option
+                        value="Sq. Ft."
+                        @selected(
+                            old(
+                                'floor_size_unit',
+                                $unit->floor_size_unit ?? ''
+                            ) == 'Sq. Ft.'
+                        )>
 
-                    <option value="Sq. Yards" @selected(old('area_unit', $unit->area_unit ?? '') == 'Sq. Yards')>Sq. Yards</option>
+                        Sq. Ft.
 
-                    <option value="Sq. Meters" @selected(old('area_unit', $unit->area_unit ?? '') == 'Sq. Meters')>Sq. Meters</option>
+                    </option>
 
-                    <option value="Acres" @selected(old('area_unit', $unit->area_unit ?? '') == 'Acres')>Acres</option>
+                    <option
+                        value="Sq. Yards"
+                        @selected(
+                            old(
+                                'floor_size_unit',
+                                $unit->floor_size_unit ?? ''
+                            ) == 'Sq. Yards'
+                        )>
+
+                        Sq. Yards
+
+                    </option>
+
+                    <option
+                        value="Sq. Meters"
+                        @selected(
+                            old(
+                                'floor_size_unit',
+                                $unit->floor_size_unit ?? ''
+                            ) == 'Sq. Meters'
+                        )>
+
+                        Sq. Meters
+
+                    </option>
 
                 </select>
 
-                @error('area_unit')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                @error('floor_size_unit')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @enderror
 
             </div>
 
-            {{-- Bedrooms --}}
-            <div class="col-md-2 mb-3">
+        </div>
 
-                <label class="form-label">Bedrooms</label>
+    </div>
 
-                <input
-                    type="number"
-                    name="bedrooms"
-                    class="form-control @error('bedrooms') is-invalid @enderror"
-                    value="{{ old('bedrooms', $unit->bedrooms ?? '') }}">
+</div>
 
-                @error('bedrooms')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+<div class="card shadow-sm mb-4">
 
-            </div>
+    <div class="card-header">
+        <h5 class="mb-0">Unit Features</h5>
+    </div>
 
-            {{-- Bathrooms --}}
-            <div class="col-md-2 mb-3">
+    <div class="card-body">
 
-                <label class="form-label">Bathrooms</label>
+        <div class="row">
 
-                <input
-                    type="number"
-                    name="bathrooms"
-                    class="form-control @error('bathrooms') is-invalid @enderror"
-                    value="{{ old('bathrooms', $unit->bathrooms ?? '') }}">
+            @foreach($unitFeatures as $feature)
 
-                @error('bathrooms')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <div class="col-md-4 col-lg-3 mb-3">
 
-            </div>
+                    <div class="form-check">
 
-            {{-- Balconies --}}
-            <div class="col-md-2 mb-3">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="features[]"
+                            value="{{ $feature->id }}"
+                            id="feature{{ $feature->id }}"
 
-                <label class="form-label">Balconies</label>
+                            @checked(
+                                in_array(
+                                    $feature->id,
+                                    old(
+                                        'features',
+                                        isset($unit)
+                                            ? $unit->features
+                                                ->pluck('id')
+                                                ->toArray()
+                                            : []
+                                    )
+                                )
+                            )>
 
-                <input
-                    type="number"
-                    name="balconies"
-                    class="form-control @error('balconies') is-invalid @enderror"
-                    value="{{ old('balconies', $unit->balconies ?? '') }}">
+                        <label
+                            class="form-check-label"
+                            for="feature{{ $feature->id }}">
 
-                @error('balconies')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                            {{ $feature->name }}
 
-            </div>
+                        </label>
 
-            {{-- Floor --}}
-            <div class="col-md-3 mb-3">
+                    </div>
 
-                <label class="form-label">Floor</label>
+                </div>
 
-                <input
-                    type="number"
-                    name="floor"
-                    class="form-control @error('floor') is-invalid @enderror"
-                    value="{{ old('floor', $unit->floor ?? '') }}">
-
-                @error('floor')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-
-            </div>
-
-            {{-- Total Floors --}}
-            <div class="col-md-3 mb-3">
-
-                <label class="form-label">Total Floors</label>
-
-                <input
-                    type="number"
-                    name="total_floors"
-                    class="form-control @error('total_floors') is-invalid @enderror"
-                    value="{{ old('total_floors', $unit->total_floors ?? '') }}">
-
-                @error('total_floors')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-
-            </div>
-
-            {{-- Facing --}}
-            <div class="col-md-4 mb-3">
-
-                <label class="form-label">Facing</label>
-
-                <select
-                    name="facing"
-                    class="form-select @error('facing') is-invalid @enderror">
-
-                    <option value="">Select Facing</option>
-
-                    <option value="North" @selected(old('facing', $unit->facing ?? '') == 'North')>North</option>
-                    <option value="South" @selected(old('facing', $unit->facing ?? '') == 'South')>South</option>
-                    <option value="East" @selected(old('facing', $unit->facing ?? '') == 'East')>East</option>
-                    <option value="West" @selected(old('facing', $unit->facing ?? '') == 'West')>West</option>
-                    <option value="North-East" @selected(old('facing', $unit->facing ?? '') == 'North-East')>North-East</option>
-                    <option value="North-West" @selected(old('facing', $unit->facing ?? '') == 'North-West')>North-West</option>
-                    <option value="South-East" @selected(old('facing', $unit->facing ?? '') == 'South-East')>South-East</option>
-                    <option value="South-West" @selected(old('facing', $unit->facing ?? '') == 'South-West')>South-West</option>
-
-                </select>
-
-                @error('facing')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-
-            </div>
+            @endforeach
 
         </div>
 

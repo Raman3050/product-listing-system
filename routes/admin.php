@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProjectImageController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UnitImageController;
+use App\Http\Controllers\Admin\TenantController;
+use App\Http\Controllers\Admin\UnitFeatureController;
+use App\Http\Controllers\Admin\ProjectPageDetailController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -65,3 +68,18 @@ Route::resource('unit-images', UnitImageController::class)
         'store',
         'destroy'
     ]);
+
+Route::resource(
+    'tenants',
+    TenantController::class
+);
+
+Route::resource(
+    'unit-features',
+    UnitFeatureController::class
+);
+
+Route::resource(
+    'project-page-details',
+    ProjectPageDetailController::class
+);

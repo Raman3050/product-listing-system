@@ -170,7 +170,8 @@
 
             <textarea
                 name="description"
-                rows="5"
+                id="description-editor"
+                rows="10"
                 class="form-control">{{ old('description', $project->description ?? '') }}</textarea>
 
         </div>
@@ -381,7 +382,7 @@
                 @enderror
                 @if(isset($project) && $project->logo)
                     <div class="mt-2">
-                        <img src="{{ Storage::disk('r2')->url($project->logo) }}" alt="Logo" class="img-thumbnail" width="100">
+                        <img src="{{ Storage::disk('public')->url($project->logo) }}" alt="Logo" class="img-thumbnail" width="100">
                     </div>
                 @endif
             </div>
@@ -394,7 +395,7 @@
                 @enderror
                 @if(isset($project) && $project->featured_image)
                     <div class="mt-2">
-                        <img src="{{ Storage::disk('r2')->url($project->featured_image) }}" alt="Featured Image" class="img-thumbnail" width="100">
+                        <img src="{{ Storage::disk('public')->url($project->featured_image) }}" alt="Featured Image" class="img-thumbnail" width="100">
                     </div>
                 @endif
             </div>
@@ -407,7 +408,7 @@
                 @enderror
                 @if(isset($project) && $project->brochure)
                     <div class="mt-2">
-                        <a href="{{ Storage::disk('r2')->url($project->brochure) }}" target="_blank" class="btn btn-sm btn-info"><i class="bi bi-file-earmark-pdf"></i> View Current</a>
+                        <a href="{{ Storage::disk('public')->url($project->brochure) }}" target="_blank" class="btn btn-sm btn-info"><i class="bi bi-file-earmark-pdf"></i> View Current</a>
                     </div>
                 @endif
             </div>
@@ -470,6 +471,225 @@
                 </div>
 
             @endforeach
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+        Location Details
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            {{-- Address --}}
+            <div class="col-md-12 mb-3">
+
+                <label class="form-label">
+                    Address
+                </label>
+
+                <textarea
+                    name="address"
+                    rows="3"
+                    class="form-control @error('address') is-invalid @enderror">{{ old('address', $project->address ?? '') }}</textarea>
+
+                @error('address')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            {{-- Google Maps URL --}}
+            <div class="col-md-12 mb-3">
+
+                <label class="form-label">
+                    Google Maps URL
+                </label>
+
+                <input
+                    type="url"
+                    name="google_maps_url"
+                    class="form-control @error('google_maps_url') is-invalid @enderror"
+                    value="{{ old('google_maps_url', $project->google_maps_url ?? '') }}"
+                    placeholder="https://maps.google.com/...">
+
+                @error('google_maps_url')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+
+        </div>
+
+        {{-- Nearby Locations (Dynamic Repeater) --}}
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+                Nearby Locations
+            </label>
+
+            @php
+                $nearbyLocations = old('nearby_locations', $project->nearby_locations ?? []);
+                if (!is_array($nearbyLocations) || empty($nearbyLocations)) {
+                    $nearbyLocations = [['name' => '', 'distance' => '']];
+                }
+            @endphp
+
+            <div
+                x-data="{
+                    rows: @js($nearbyLocations),
+
+                    addRow() {
+                        this.rows.push({ name: '', distance: '' });
+                    },
+
+                    removeRow(index) {
+                        if (this.rows.length > 1) {
+                            this.rows.splice(index, 1);
+                        }
+                    }
+                }">
+
+                <template x-for="(row, index) in rows" :key="index">
+
+                    <div class="row mb-2 align-items-center">
+
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. IGI Airport"
+                                :name="`nearby_locations[${index}][name]`"
+                                x-model="row.name">
+                        </div>
+
+                        <div class="col-md-4">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. 12 km"
+                                :name="`nearby_locations[${index}][distance]`"
+                                x-model="row.distance">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger"
+                                @click="removeRow(index)"
+                                x-show="rows.length > 1">
+                                <i class="bi bi-trash"></i> Remove
+                            </button>
+                        </div>
+
+                    </div>
+
+                </template>
+
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary mt-2"
+                    @click="addRow()">
+                    <i class="bi bi-plus-circle"></i> Add Nearby Location
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+        Floor Plan
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            {{-- Floor Plan Image --}}
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Floor Plan Image
+                </label>
+
+                <input
+                    type="file"
+                    name="floor_plan_image"
+                    class="form-control @error('floor_plan_image') is-invalid @enderror"
+                    accept="image/png, image/jpeg, image/webp, image/avif">
+
+                @error('floor_plan_image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+                @if(isset($project) && $project->floor_plan_image)
+                    <div class="mt-2">
+                        <img
+                            src="{{ Storage::disk('public')->url($project->floor_plan_image) }}"
+                            alt="Floor Plan"
+                            class="img-thumbnail"
+                            width="150">
+                    </div>
+                @endif
+
+            </div>
+
+            {{-- Floor Plan PDF --}}
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Floor Plan PDF
+                </label>
+
+                <input
+                    type="file"
+                    name="floor_plan_pdf"
+                    class="form-control @error('floor_plan_pdf') is-invalid @enderror"
+                    accept="application/pdf">
+
+                @error('floor_plan_pdf')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+                @if(isset($project) && $project->floor_plan_pdf)
+                    <div class="mt-2">
+                        <a
+                            href="{{ Storage::disk('public')->url($project->floor_plan_pdf) }}"
+                            target="_blank"
+                            class="btn btn-sm btn-info">
+                            <i class="bi bi-file-earmark-pdf"></i> View Current
+                        </a>
+                    </div>
+                @endif
+
+            </div>
 
         </div>
 
@@ -549,3 +769,27 @@
     </div>
 
 </div>
+
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#description-editor').summernote({
+            height: 250,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'table', 'hr']],
+                ['view', ['codeview', 'fullscreen']],
+            ],
+            placeholder: 'Write project description...',
+        });
+    });
+</script>
+@endpush

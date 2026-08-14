@@ -137,6 +137,50 @@ class StoreProjectRequest extends FormRequest
             'amenities.*' => [
                 'exists:amenities,id',
             ],
+
+            // Location Details
+            'address' => [
+                'nullable',
+                'string',
+                'max:500',
+            ],
+
+            'google_maps_url' => [
+                'nullable',
+                'string',
+                'url',
+                'max:2048',
+            ],
+
+            'nearby_locations' => [
+                'nullable',
+                'array',
+            ],
+
+            'nearby_locations.*.name' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'nearby_locations.*.distance' => [
+                'nullable',
+                'string',
+                'max:50',
+            ],
+
+            // Floor Plan
+            'floor_plan_image' => [
+                'nullable',
+                'mimes:jpg,jpeg,png,webp,avif',
+                'max:4096',
+            ],
+
+            'floor_plan_pdf' => [
+                'nullable',
+                'mimes:pdf',
+                'max:10240',
+            ],
         ];
     }
 }

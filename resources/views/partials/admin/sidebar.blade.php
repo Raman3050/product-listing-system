@@ -37,6 +37,17 @@
     </li>
 
     <li>
+        <a href="{{ route('admin.project-page-details.index') }}"
+        class="{{ request()->routeIs('admin.project-page-details.*') ? 'active' : '' }}">
+
+            <i class="bi bi-layout-text-window-reverse"></i>
+
+            Project Page Details
+
+        </a>
+    </li>
+
+    <li>
         <a href="{{ route('admin.units.index') }}"
             class="{{ request()->routeIs('admin.units.*') ? 'active' : '' }}">
             <i class="bi bi-building"></i>
@@ -93,6 +104,22 @@
             class="{{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
             <i class="bi bi-geo-alt"></i>
             Locations
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ route('admin.tenants.index') }}"
+        class="{{ request()->routeIs('admin.tenants.*') ? 'active' : '' }}">
+            <i class="bi bi-shop"></i>
+            Tenants / Brands
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ route('admin.unit-features.index') }}"
+        class="{{ request()->routeIs('admin.unit-features.*') ? 'active' : '' }}">
+            <i class="bi bi-stars"></i>
+            Unit Features
         </a>
     </li>
 

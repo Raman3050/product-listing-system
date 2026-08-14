@@ -17,6 +17,11 @@ class Project extends Model
 
         'description',
 
+        // Location Details
+        'address',
+        'google_maps_url',
+        'nearby_locations',
+
         'rera_number',
         'possession_date',
 
@@ -30,6 +35,10 @@ class Project extends Model
         'featured_image',
         'brochure',
 
+        // Floor Plan
+        'floor_plan_image',
+        'floor_plan_pdf',
+
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -42,6 +51,8 @@ class Project extends Model
         'status' => 'boolean',
 
         'possession_date' => 'date',
+
+        'nearby_locations' => 'array',
     ];
 
     public function propertyCategory()
@@ -72,6 +83,11 @@ class Project extends Model
     public function units()
     {
         return $this->hasMany(Unit::class);
+    }
+
+    public function pageDetails()
+    {
+        return $this->hasOne(ProjectPageDetail::class);
     }
 
 }

@@ -68,7 +68,7 @@
                 <div class="mt-3">
 
                     <img
-                        src="{{ Storage::disk('r2')->url($builder->logo) }}"
+                        src="{{ Storage::disk('public')->url($builder->logo) }}"
                         width="120"
                         class="img-thumbnail">
 

@@ -153,6 +153,27 @@ class ProjectController extends Controller
                 );
             }
 
+            // Upload Floor Plan Image
+            if ($request->hasFile('floor_plan_image')) {
+                $validated['floor_plan_image'] = $this->uploadFile(
+                    $request->file('floor_plan_image'),
+                    'projects/floor-plans'
+                );
+            }
+
+            // Upload Floor Plan PDF
+            if ($request->hasFile('floor_plan_pdf')) {
+                $validated['floor_plan_pdf'] = $this->uploadFile(
+                    $request->file('floor_plan_pdf'),
+                    'projects/floor-plans'
+                );
+            }
+
+            // Filter empty nearby location rows
+            $validated['nearby_locations'] = $this->filterNearbyLocations(
+                $validated['nearby_locations'] ?? []
+            );
+
             $validated['status'] = $request->boolean('status');
 
             $project = Project::create($validated);
@@ -240,6 +261,33 @@ class ProjectController extends Controller
                 );
             }
 
+            // Floor Plan Image
+            if ($request->hasFile('floor_plan_image')) {
+
+                $this->deleteFile($project->floor_plan_image);
+
+                $validated['floor_plan_image'] = $this->uploadFile(
+                    $request->file('floor_plan_image'),
+                    'projects/floor-plans'
+                );
+            }
+
+            // Floor Plan PDF
+            if ($request->hasFile('floor_plan_pdf')) {
+
+                $this->deleteFile($project->floor_plan_pdf);
+
+                $validated['floor_plan_pdf'] = $this->uploadFile(
+                    $request->file('floor_plan_pdf'),
+                    'projects/floor-plans'
+                );
+            }
+
+            // Filter empty nearby location rows
+            $validated['nearby_locations'] = $this->filterNearbyLocations(
+                $validated['nearby_locations'] ?? []
+            );
+
             $validated['status'] = $request->boolean('status');
 
             $project->update($validated);
@@ -265,6 +313,10 @@ class ProjectController extends Controller
 
             $this->deleteFile($project->brochure);
 
+            $this->deleteFile($project->floor_plan_image);
+
+            $this->deleteFile($project->floor_plan_pdf);
+
             $project->amenities()->detach();
 
             $project->delete();
@@ -279,13 +331,33 @@ class ProjectController extends Controller
     private function uploadFile($file, string $directory): string
     {
         $filename = time() . '_' . $file->getClientOriginalName();
-        return $file->storeAs($directory, $filename, 'r2');
+        return $file->storeAs($directory, $filename, 'public');
     }
 
     private function deleteFile(?string $path): void
     {
-        if ($path && Storage::disk('r2')->exists($path)) {
-            Storage::disk('r2')->delete($path);
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
+    }
+
+    /**
+     * Filter out nearby-location rows where both name and distance are empty.
+     */
+    private function filterNearbyLocations(?array $locations): ?array
+    {
+        if (empty($locations)) {
+            return null;
+        }
+
+        $filtered = collect($locations)
+            ->filter(function ($row) {
+                return !empty(trim($row['name'] ?? ''))
+                    || !empty(trim($row['distance'] ?? ''));
+            })
+            ->values()
+            ->toArray();
+
+        return !empty($filtered) ? $filtered : null;
     }
 }

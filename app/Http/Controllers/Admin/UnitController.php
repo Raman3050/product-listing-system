@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Project;
 use App\Models\PropertyType;
 use App\Models\Unit;
+use App\Models\Tenant;
+use App\Models\UnitFeature;
 use Illuminate\Http\Request;
 
 
@@ -86,11 +88,21 @@ class UnitController extends Controller
             ->orderBy('name')
             ->get();
 
+        $tenants = Tenant::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        $unitFeatures = UnitFeature::where('status', true)
+            ->orderBy('name')
+            ->get();
+
         return view(
             'admin.units.create',
             compact(
                 'projects',
-                'propertyTypes'
+                'propertyTypes',
+                'tenants',
+                'unitFeatures'
             )
         );
     }
@@ -107,7 +119,9 @@ class UnitController extends Controller
 
         $validated['price_on_request'] = $request->boolean('price_on_request');
 
-        Unit::create($validated);
+        $unit = Unit::create($validated);
+
+        $unit->features()->sync($request->input('features', []));
 
         return redirect()
             ->route('admin.units.index')
@@ -120,12 +134,18 @@ class UnitController extends Controller
 
         $propertyTypes = PropertyType::where('status', true)->orderBy('name')->get();
 
+        $tenants = Tenant::where('status', true)->orderBy('name')->get();
+
+        $unitFeatures = UnitFeature::where('status', true)->orderBy('name')->get();
+
         return view(
             'admin.units.edit',
             compact(
                 'unit',
                 'projects',
-                'propertyTypes'
+                'propertyTypes',
+                'tenants',
+                'unitFeatures'
             )
         );
     }
@@ -144,9 +164,12 @@ class UnitController extends Controller
 
         $validated['status'] = $request->boolean('status');
 
-        $validated['price_on_request'] = $request->boolean('price_on_request');
+        $validated['price_on_request'] =
+            $request->boolean('price_on_request');
 
         $unit->update($validated);
+
+        $unit->features()->sync($request->input('features', []));
 
         return redirect()
             ->route('admin.units.index')

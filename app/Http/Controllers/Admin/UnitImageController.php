@@ -56,7 +56,7 @@ class UnitImageController extends Controller
                 $path = $image->storeAs(
                     'units/gallery',
                     $filename,
-                    'r2'
+                    'public'
                 );
 
                 UnitImage::create([
@@ -84,9 +84,9 @@ class UnitImageController extends Controller
     {
         if (
             $unitImage->image &&
-            Storage::disk('r2')->exists($unitImage->image)
+            Storage::disk('public')->exists($unitImage->image)
         ) {
-            Storage::disk('r2')->delete($unitImage->image);
+            Storage::disk('public')->delete($unitImage->image);
         }
 
         $unitId = $unitImage->unit_id;

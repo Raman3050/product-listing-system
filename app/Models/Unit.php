@@ -7,30 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Unit extends Model
 {
     protected $fillable = [
-
         'project_id',
         'property_type_id',
+        'tenant_id',
 
         'name',
         'slug',
 
         'price',
         'price_on_request',
-        'booking_amount',
 
-        'carpet_area',
-        'builtup_area',
-        'super_area',
-        'area_unit',
+        'annual_roi',
+        'lease_status',
+        'lock_in_years',
+        'monthly_rental',
+        'minimum_rental',
 
-        'bedrooms',
-        'bathrooms',
-        'balconies',
-
-        'floor',
-        'total_floors',
-
-        'facing',
+        'floor_size',
+        'floor_size_unit',
 
         'description',
 
@@ -39,7 +33,11 @@ class Unit extends Model
         'meta_keywords',
 
         'status',
+    ];
 
+    protected $casts = [
+        'price_on_request' => 'boolean',
+        'status' => 'boolean',
     ];
 
     public function project()
@@ -55,6 +53,16 @@ class Unit extends Model
     public function images()
     {
         return $this->hasMany(UnitImage::class);
+    }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function features()
+    {
+        return $this->belongsToMany(UnitFeature::class, 'unit_feature');
     }
 
 }

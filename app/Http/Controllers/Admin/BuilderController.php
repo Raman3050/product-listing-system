@@ -53,7 +53,7 @@ class BuilderController extends Controller
             $file = $request->file('logo');
             $filename = time() . '_' . $file->getClientOriginalName();
             
-            $validated['logo'] = $file->storeAs('builders', $filename, 'r2');
+            $validated['logo'] = $file->storeAs('builders', $filename, 'public');
         }
 
         $validated['status'] = $request->boolean('status');
@@ -81,17 +81,17 @@ class BuilderController extends Controller
 
             if (
                 $builder->logo &&
-                Storage::disk('r2')->exists($builder->logo)
+                Storage::disk('public')->exists($builder->logo)
             ) {
 
-                Storage::disk('r2')->delete($builder->logo);
+                Storage::disk('public')->delete($builder->logo);
 
             }
 
             $file = $request->file('logo');
             $filename = time() . '_' . $file->getClientOriginalName();
             
-            $validated['logo'] = $file->storeAs('builders', $filename, 'r2');
+            $validated['logo'] = $file->storeAs('builders', $filename, 'public');
         }
 
         $validated['status'] = $request->boolean('status');
@@ -107,10 +107,10 @@ class BuilderController extends Controller
     {
         if (
             $builder->logo &&
-            Storage::disk('r2')->exists($builder->logo)
+            Storage::disk('public')->exists($builder->logo)
         ) {
 
-            Storage::disk('r2')->delete($builder->logo);
+            Storage::disk('public')->delete($builder->logo);
 
         }
 
