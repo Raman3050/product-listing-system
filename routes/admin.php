@@ -83,3 +83,18 @@ Route::resource(
     'project-page-details',
     ProjectPageDetailController::class
 );
+
+Route::resource(
+    'home-page-banners',
+    \App\Http\Controllers\Admin\HomePageUnitBannerController::class
+);
+
+Route::resource(
+    'home-page-logos',
+    \App\Http\Controllers\Admin\HomePageProjectLogoController::class
+);
+
+Route::resource(
+    'home-page-featured',
+    \App\Http\Controllers\Admin\HomePageFeaturedPropertyController::class
+);

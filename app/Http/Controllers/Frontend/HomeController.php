@@ -9,6 +9,21 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('frontend.home.index');
+        $banners = \App\Models\HomePageUnitBanner::with(['project.pageDetails', 'unit'])
+            ->where('status', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        $logos = \App\Models\HomePageProjectLogo::with('builder')
+            ->where('status', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        $featuredProperties = \App\Models\HomePageFeaturedProperty::with(['project', 'unit.tenant', 'project.builder', 'project.location', 'project.propertyCategory', 'project.pageDetails'])
+            ->where('status', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('frontend.home.index', compact('banners', 'logos', 'featuredProperties'));
     }
 }

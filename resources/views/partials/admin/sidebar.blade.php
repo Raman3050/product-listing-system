@@ -128,9 +128,9 @@
     </li>
 
     <li>
-        <a href="#">
-            <i class="bi bi-images"></i>
-            Banners
+        <a href="{{ route('admin.home-page-banners.index') }}" class="{{ request()->routeIs('admin.home-page-banners.*') ? 'active' : '' }}">
+            <i class="bi bi-window"></i>
+            Home Page Details
         </a>
     </li>
 

@@ -6,164 +6,64 @@
     <section class="hero-slider">
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
-                <!-- Slide 1 -->
+                @foreach($banners as $banner)
                 <div class="swiper-slide hero-slide">
-                    <img src="{{ asset('frontend_assets/images/hero/hero-bg-image-metal2.webp') }}" alt="Premium Real Estate" class="hero-bg" />
+                    <img src="{{ Storage::disk('public')->url($banner->background_image) }}" alt="{{ strip_tags($banner->heading) }}" class="hero-bg" />
                     <div class="hero-overlay"></div>
                     <div class="container hero-container">
                         <div class="hero-content-box" data-aos="fade-up" data-aos-duration="1000">
                             <span class="hero-eyebrow">
-                                Premium Real Estate
+                                {{ $banner->yellow_tagline }}
                             </span>
                             <h1>
-                                Spaces built for how you <span>live</span>
+                                @if($banner->heading)
+                                    {!! preg_replace('/(\S+)\s*$/', '<span>$1</span>', trim($banner->heading)) !!}
+                                @endif
                             </h1>
                             <p>
-                                Discover architecturally distinct homes across the island,
-                                crafted with quality finishes and designed for modern island living.
+                                {{ $banner->description }}
                             </p>
-                            <a href="#" class="hero-btn">
-                                Explore Properties
+                            @if($banner->project)
+                            <a href="{{ route('catalog.show', $banner->project->slug) }}" class="hero-btn">
+                                {{ $banner->button_text ?: 'Explore Properties' }}
                                 <i class="bi bi-arrow-right"></i>
                             </a>
+                            @endif
                         </div>
                     </div>
+                    @if($banner->project && $banner->unit)
                     <!-- Featured Property Card -->
                     <div class="featured-property-card">
                         <div class="featured-label">
                             <span></span>
-                            RETAIL / COMMERCIAL
+                            {{ 'RETAIL / COMMERCIAL' }}
                         </div>
-                        <h3>3 Roads</h3>
+                        <h3>{{ $banner->card_title ?: $banner->project->name }}</h3>
                         <div class="featured-meta">
                             <div class="meta-item">
                                 <i data-lucide="building-2"></i>
-                                <span>Retail</span>
+                                <span>{{ $banner->project->propertyCategory->name ?? 'Retail' }}</span>
                             </div>
                             <div class="meta-item">
                                 <i data-lucide="store"></i>
-                                <span>TATA Croma & Apple</span>
+                                <span>{{ $banner->card_brand ?: ($banner->unit->tenant->name ?? 'N/A') }}</span>
                             </div>
                             <div class="meta-item">
                                 <i data-lucide="maximize"></i>
-                                <span>GF - 3800 Sqft</span>
+                                <span>{{ $banner->card_area ?: ($banner->unit->floor_size . ' Sqft') }}</span>
                             </div>
                         </div>
                         <div class="featured-price">
-                            Starts @ ₹1.8 Cr
+                            Starts @ {{ $banner->unit->price ? number_format($banner->unit->price / 100000, 0) . ' L' : 'On Request' }}
                         </div>
-                        <a href="#" class="featured-link">
+                        <a href="{{ route('catalog.show', $banner->project->slug) }}" class="featured-link">
                             <span>View Property</span>
                             <i data-lucide="arrow-right"></i>
                         </a>
                     </div>
+                    @endif
                 </div>
-                <!-- Slide 2 -->
-                <div class="swiper-slide hero-slide">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop"
-                        alt="New Developments" class="hero-bg" />
-                    <div class="hero-overlay"></div>
-                    <div class="container hero-container">
-                        <div class="hero-content-box">
-                            <span class="hero-eyebrow">
-                                New Developments
-                            </span>
-                            <h1>
-                                Modern living, timeless <span>design</span>
-                            </h1>
-                            <p>
-                                From beachside apartments to hillside villas, explore
-                                new-launch projects built for comfort, light and long-term value.
-                            </p>
-                            <a href="#" class="hero-btn">
-                                View New Launches
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Featured Property Card -->
-                    <div class="featured-property-card">
-                        <div class="featured-label">
-                            <span></span>
-                            RETAIL / COMMERCIAL
-                        </div>
-                        <h3>3 Roads</h3>
-                        <div class="featured-meta">
-                            <div class="meta-item">
-                                <i data-lucide="building-2"></i>
-                                <span>Retail</span>
-                            </div>
-                            <div class="meta-item">
-                                <i data-lucide="store"></i>
-                                <span>Domino's &amp; Kala Kamini</span>
-                            </div>
-                            <div class="meta-item">
-                                <i data-lucide="maximize"></i>
-                                <span>GF - 1560 Sqft</span>
-                            </div>
-                        </div>
-                        <div class="featured-price">
-                            Starts @ ₹1.8 Cr
-                        </div>
-                        <a href="#" class="featured-link">
-                            <span>View Property</span>
-                            <i data-lucide="arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <!-- Slide 3 -->
-                <div class="swiper-slide hero-slide">
-                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop"
-                        alt="Investment Property" class="hero-bg" />
-                    <div class="hero-overlay"></div>
-                    <div class="container hero-container">
-                        <div class="hero-content-box">
-                            <span class="hero-eyebrow">
-                                Invest With Confidence
-                            </span>
-                            <h1>
-                                Pre-leased assets, steady <span>returns</span>
-                            </h1>
-                            <p>
-                                Browse our curated pre-leased portfolio with fully tenanted
-                                properties offering predictable rental income from day one.
-                            </p>
-                            <a href="#" class="hero-btn">
-                                View Pre-Leased Assets
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Featured Property Card -->
-                    <div class="featured-property-card">
-                        <div class="featured-label">
-                            <span></span>
-                            RETAIL / COMMERCIAL
-                        </div>
-                        <h3>AIPL Joy Central</h3>
-                        <div class="featured-meta">
-                            <div class="meta-item">
-                                <i data-lucide="building-2"></i>
-                                <span>Retail</span>
-                            </div>
-                            <div class="meta-item">
-                                <i data-lucide="store"></i>
-                                <span>Hop-Up Gaming Arena</span>
-                            </div>
-                            <div class="meta-item">
-                                <i data-lucide="maximize"></i>
-                                <span>500 Sqft</span>
-                            </div>
-                        </div>
-                        <div class="featured-price">
-                            Starts @ ₹1 Cr
-                        </div>
-                        <a href="#" class="featured-link">
-                            <span>View Property</span>
-                            <i data-lucide="arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <!-- Swiper Pagination -->
             <div class="swiper-pagination"></div>
@@ -192,21 +92,13 @@
                 <div class="col-xl-10">
                     <div class="swiper logoSwiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <img src="{{ asset('frontend_assets/images/brands/aipl.png') }}" alt="">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('frontend_assets/images/brands/JMD1.png') }}" alt="">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('frontend_assets/images/brands/m3m.png') }}" alt="">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('frontend_assets/images/brands/rajdarbar.png') }}" alt="">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('frontend_assets/images/brands/reach.png') }}" alt="">
-                            </div>
+                            @foreach($logos as $logo)
+                                @if($logo->builder && $logo->builder->logo)
+                                    <div class="swiper-slide">
+                                        <img src="{{ Storage::disk('public')->url($logo->builder->logo) }}" alt="{{ $logo->builder->name }}">
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -263,353 +155,85 @@
             </div>
             <div class="swiper featuredSwiper">
                 <div class="swiper-wrapper">
+                    @foreach($featuredProperties as $item)
                     <div class="swiper-slide">
                         <div class="featured-card">
                             <div class="photo-wrap">
-                                <img src="{{ asset('frontend_assets/images/project-present-brands-banner/hopup-01.webp') }}" alt="AIPL Joy Central">
+                                @if($item->display_image)
+                                    <img src="{{ Storage::disk('public')->url($item->display_image) }}" alt="{{ $item->project->name ?? 'Project' }}">
+                                @elseif($item->project && $item->project->display_image)
+                                    <img src="{{ Storage::disk('public')->url($item->project->display_image) }}" alt="{{ $item->project->name }}">
+                                @endif
                                 <div class="photo-overlay"></div>
-                                <div class="badge">RETAIL / COMMERCIAL</div>
-                                <div class="price"><span>Investment Starts @</span>&#8377;1.78 Cr</div>
+                                <div class="badge">{{'RETAIL / COMMERCIAL' }}</div>
+                                <div class="price"><span>Investment Starts @</span>{{ $item->unit->price ? number_format($item->unit->price / 100000, 0) . ' L' : 'On Request' }}</div>
                             </div>
                             <div class="content">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <div class="title">AIPL Joy Central</div>
+                                        <div class="title">{{ $item->project->name ?? 'N/A' }}</div>
                                         <div class="location">
                                             <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
+                                                <path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
                                             </svg>
-                                            Sector - 65, Gurugram
+                                            {{ $item->project->location->name ?? 'Gurugram' }}
                                         </div>
                                     </div>
                                     <div>
                                         <div class="property-logo">
-                                            <img src="{{ asset('frontend_assets/images/brands/aipl.png') }}" alt="">
+                                            @if($item->project && $item->project->builder && $item->project->builder->logo)
+                                                <img src="{{ Storage::disk('public')->url($item->project->builder->logo) }}" alt="{{ $item->project->builder->name }}">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="desc">
-                                    Experience premium retail, fine dining, entertainment, and Grade-A offices at AIPL
-                                    Joy Central, a landmark mixed-use commercial destination on Golf Course Extension
-                                    Road, Gurgaon.
+                                    @if($item->project && $item->project->pageDetails)
+                                        {{ Str::limit(strip_tags($item->project->pageDetails->description), 150) }}
+                                    @else
+                                        Premium open-air retail destination offering shopping, dining, entertainment, and community experiences.
+                                    @endif
                                 </div>
                                 <div class="stats">
                                     <div class="stat">
                                         <div class="label">Tenant</div>
-                                        <div class="value">Retail Shop</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Area</div>
-                                        <div class="value">500 Sqft</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Leasing</div>
-                                        <div class="value">9 yrs ( 3 yrs Lock In )</div>
-                                    </div>
-                                </div>
-                                <div class="row-stats">
-                                    <div class="row-stat">
-                                        <span class="label">Brand</span>
-                                        <span class="value">Hop-Up- Gaming Arena</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Mini Rental</span>
-                                        <span class="value">₹ 87.50 / Sqft</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Mini ROI</span>
-                                        <span class="value">6%</span>
-                                    </div>
-                                </div>
-                                <!-- <div class="price"><span>Investment Starts @</span>&#8377;1.78 Cr</div> -->
-                                <button class="cta">
-                                    View Property
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
-                                        <path d="M5 12h14M13 6l6 6-6 6" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="featured-card">
-                            <div class="photo-wrap">
-                                <img src="{{ asset('frontend_assets/images/project-present-brands-banner/spyder-02.webp') }}" alt="3 Roads">
-                                <div class="photo-overlay"></div>
-                                <div class="badge">RETAIL / COMMERCIAL</div>
-                                <div class="price"><span>Investment Starts @</span>&#8377;1.46 Cr</div>
-                            </div>
-                            <div class="content">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <div class="title">3 Roads</div>
-                                        <div class="location">
-                                            <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
-                                            </svg>
-                                            Sector - 70, Gurugram
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="property-logo">
-                                            <img src="{{ asset('frontend_assets/images/brands/reach-white.png') }}" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="desc">
-                                    3 Roads by REACH is a premium open-air retail destination in Sector 70, Gurugram,
-                                    offering shopping, dining, entertainment, and community experiences in one vibrant
-                                    location.
-                                </div>
-                                <div class="stats">
-                                    <div class="stat">
-                                        <div class="label">Tenant</div>
-                                        <div class="value">Retail Shop</div>
+                                        <div class="value">{{ $item->unit->tenant->name ?? 'Retail' }}</div>
                                     </div>
                                     <div class="stat">
                                         <div class="label">Floor Size / Area</div>
-                                        <div class="value">305-995 Sqft</div>
+                                        <div class="value">{{ $item->unit->floor_size ?? 'N/A' }} Sqft</div>
                                     </div>
                                     <div class="stat">
                                         <div class="label">Leasing</div>
-                                        <div class="value">9 yrs To ( 3 yrs Lock In )</div>
+                                        <div class="value">{{ $item->unit->lease_status ?? 'N/A' }} @if($item->unit->lock_in_years) ({{ $item->unit->lock_in_years }} yrs Lock In) @endif</div>
                                     </div>
                                 </div>
                                 <div class="row-stats">
                                     <div class="row-stat">
                                         <span class="label">Brand</span>
-                                        <span class="value">Sky Riders- Gaming Arena</span>
+                                        <span class="value">{{ $item->unit->tenant->name ?? 'N/A' }}</span>
                                     </div>
                                     <div class="row-stat">
-                                        <span class="label">Mini Rental</span>
-                                        <span class="value">₹ 135 / Sqft</span>
+                                        <span class="label">Rental</span>
+                                        <span class="value">{{ $item->unit->minimum_rental ?? ($item->unit->monthly_rental ?? 'N/A') }}</span>
                                     </div>
                                     <div class="row-stat">
-                                        <span class="label">Mini ROI</span>
-                                        <span class="value">6%</span>
+                                        <span class="label">ROI</span>
+                                        <span class="value">{{ $item->unit->annual_roi ?? 'N/A' }}</span>
                                     </div>
                                 </div>
-                                <button class="cta">
-                                    View Property
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
-                                        <path d="M5 12h14M13 6l6 6-6 6" />
-                                    </svg>
-                                </button>
+                                <a href="{{ route('catalog.show', $item->project->slug) }}" style="text-decoration: none;">
+                                    <button class="cta">
+                                        View Property
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
+                                            <path d="M5 12h14M13 6l6 6-6 6" />
+                                        </svg>
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="featured-card">
-                            <div class="photo-wrap">
-                                <img src="{{ asset('frontend_assets/images/project-present-brands-banner/zudio-03.webp') }}" alt="3 Roads">
-                                <div class="photo-overlay"></div>
-                                <div class="badge">RETAIL / COMMERCIAL</div>
-                                <div class="price"><span>Investment Starts @</span>&#8377;1.8 Cr</div>
-                            </div>
-                            <div class="content">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <div class="title">3 Roads</div>
-                                        <div class="location">
-                                            <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
-                                            </svg>
-                                            Sector - 70, Gurugram
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="property-logo">
-                                            <img src="{{ asset('frontend_assets/images/brands/reach-white.png') }}" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="desc">
-                                    3 Roads by REACH is a premium open-air retail destination in Sector 70, Gurugram,
-                                    offering shopping, dining, entertainment, and community experiences in one vibrant
-                                    location.
-                                </div>
-                                <div class="stats">
-                                    <div class="stat">
-                                        <div class="label">Tenant</div>
-                                        <div class="value">Retail Shop</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Floor Size / Area</div>
-                                        <div class="value">FF- 1905 & 1975 Sqft</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Leasing</div>
-                                        <div class="value">15 yrs ( 3 yrs Lock In )</div>
-                                    </div>
-                                </div>
-                                <div class="row-stats">
-                                    <div class="row-stat">
-                                        <span class="label">Brand</span>
-                                        <span class="value">TATA Zudio- Gaming Arena</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Mini Rental</span>
-                                        <span class="value">₹ 160 / Sqft</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Mini ROI</span>
-                                        <span class="value">6%</span>
-                                    </div>
-                                </div>
-                                <button class="cta">
-                                    View Property
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
-                                        <path d="M5 12h14M13 6l6 6-6 6" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="featured-card">
-                            <div class="photo-wrap">
-                                <img src="{{ asset('frontend_assets/images/project-present-brands-banner/croma-04.webp') }}" alt="3 Roads">
-                                <div class="photo-overlay"></div>
-                                <div class="badge">RETAIL / COMMERCIAL</div>
-                                <div class="price">
-                                    <span>Investment Starts @</span>
-                                    &#8377;1.8 Cr
-                                </div>
-                            </div>
-                            <div class="content">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <div class="title">3 Roads</div>
-                                        <div class="location">
-                                            <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
-                                            </svg>
-                                            Sector - 70, Gurugram
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="property-logo">
-                                            <img src="{{ asset('frontend_assets/images/brands/reach-white.png') }}" alt="Reach Group">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="desc">
-                                    Premium open-air retail destination in Sector 70, Gurugram, featuring leading
-                                    brands, lifestyle shopping, dining, and entertainment with excellent visibility and
-                                    investment potential.
-                                </div>
-                                <div class="stats">
-                                    <div class="stat">
-                                        <div class="label">Tenant</div>
-                                        <div class="value">Retail</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Floor Size / Area</div>
-                                        <div class="value">GF - 3800 Sqft</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Leasing</div>
-                                        <div class="value">18 yrs (3 yrs Lock In)</div>
-                                    </div>
-                                </div>
-                                <div class="row-stats">
-                                    <div class="row-stat">
-                                        <span class="label">Brand</span>
-                                        <span class="value">TATA Croma & Apple</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Minimum Rental</span>
-                                        <span class="value">₹197 / Sqft</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Minimum ROI</span>
-                                        <span class="value">6%</span>
-                                    </div>
-                                </div>
-                                <button class="cta">
-                                    View Property
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
-                                        <path d="M5 12h14M13 6l6 6-6 6" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="featured-card">
-                            <div class="photo-wrap">
-                                <img src="{{ asset('frontend_assets/images/project-present-brands-banner/Dominos-05.webp') }}" alt="3 Roads">
-                                <div class="photo-overlay"></div>
-                                <div class="badge">RETAIL / COMMERCIAL</div>
-                                <div class="price">
-                                    <span>Investment Starts @</span>
-                                    &#8377;1.8 Cr
-                                </div>
-                            </div>
-                            <div class="content">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <div class="title">3 Roads</div>
-                                        <div class="location">
-                                            <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
-                                            </svg>
-                                            Sector - 70, Gurugram
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="property-logo">
-                                            <img src="{{ asset('frontend_assets/images/brands/reach-white.png') }}" alt="Reach Group">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="desc">
-                                    Premium high-street retail destination in Sector 70, Gurugram, featuring renowned
-                                    brands, vibrant dining, and excellent investment opportunities with strong rental
-                                    potential.
-                                </div>
-                                <div class="stats">
-                                    <div class="stat">
-                                        <div class="label">Tenant</div>
-                                        <div class="value">Retail</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Floor Size / Area</div>
-                                        <div class="value">GF - 1560 Sqft</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="label">Leasing</div>
-                                        <div class="value">9 yrs (3 yrs Lock In)</div>
-                                    </div>
-                                </div>
-                                <div class="row-stats">
-                                    <div class="row-stat">
-                                        <span class="label">Brand</span>
-                                        <span class="value">Domino's &amp; Kala Kamini</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Minimum Rental</span>
-                                        <span class="value">₹130 / Sqft</span>
-                                    </div>
-                                    <div class="row-stat">
-                                        <span class="label">Minimum ROI</span>
-                                        <span class="value">6%</span>
-                                    </div>
-                                </div>
-                                <button class="cta">
-                                    View Property
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
-                                        <path d="M5 12h14M13 6l6 6-6 6" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <!-- Navigation -->
                 <button class="property-prev" aria-label="Previous">
