@@ -15,6 +15,7 @@
 <!-- AOS CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lightgallery-bundle.min.css">
 <link rel="stylesheet" href="{{ asset('frontend_assets/css/style.css') }}">
 
 @stack('styles')

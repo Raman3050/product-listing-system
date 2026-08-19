@@ -237,6 +237,28 @@
                             </div>
                         </div>
 
+                        <!-- DYNAMIC INVESTMENT DETAILS -->
+                        @if(is_array($project->investment_details) && count($project->investment_details) > 0)
+                            <div class="card-block">
+                                @foreach($project->investment_details as $detail)
+                                    @if(isset($detail['heading']) && $detail['heading'] !== '')
+                                        <div class="mb-5">
+                                            <h2 class="section-title mb-4">{{ $detail['heading'] }}</h2>
+                                            <div>
+                                                <ul class="invest-list">
+                                                    @foreach($detail['points'] ?? [] as $point)
+                                                        @if($point)
+                                                            <li>{{ $point }}</li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+
                         <!-- ACTIVE BRANDS -->
                         @if($activeBrands->count() > 0)
                             <div class="card-block">
@@ -279,6 +301,32 @@
                             </div>
                         @endif
 
+                        <!-- UNIT GALLERY -->
+                        @if($unit->images->count() > 0)
+                            <div class="card-block" id="gallery">
+                                <h2 class="section-title mb-4">Gallery</h2>
+
+                                <div class="swiper gallery-slider">
+                                    <div class="swiper-wrapper" id="unit-lightgallery">
+                                        @foreach($unit->images as $image)
+                                            <div class="swiper-slide">
+                                                <a href="{{ Storage::url($image->image_path) }}" class="gallery-item"
+                                                    data-sub-html="{{ $image->caption ?? 'Unit Image' }}">
+                                                    <img src="{{ Storage::url($image->image_path) }}" alt="{{ $image->caption ?? 'Unit Image' }}">
+                                                    <span class="gallery-zoom"><i data-lucide="zoom-in"
+                                                            class="ic-sm"></i></span>
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    <div class="gallery-prev"><i class="bi bi-arrow-left"></i></div>
+                                    <div class="gallery-next"><i class="bi bi-arrow-right"></i></div>
+                                    <div class="swiper-pagination gallery-pagination"></div>
+                                </div>
+                            </div>
+                        @endif
+
                         <!-- FLOOR PLANS -->
                         @if($project->floor_plan_image || $project->floor_plan_pdf)
                             <div class="card-block">
@@ -301,6 +349,8 @@
                                 @endif
                             </div>
                         @endif
+
+                        
 
                         <!-- LOCATION -->
                         <div class="card-block" id="location">
@@ -340,6 +390,423 @@
                                 </div>
                             @endif
 
+                        </div>
+
+                        <!-- Faqs -->
+                        @if(is_array($project->faqs) && count($project->faqs) > 0)
+                            <div class="card-block" id="unit-faqs">
+                                <h2 class="section-title mb-2">Frequently asked questions</h2>
+
+                                <div class="wb-card faq">
+                                    <ul>
+                                        @foreach($project->faqs as $faq)
+                                            @if(isset($faq['question']) && $faq['question'] !== '')
+                                                <li><b>{{ $faq['question'] }}</b>{{ $faq['answer'] ?? '' }}</li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
+
+
+                        <!-- OTHERS AVAILABLE UNITS -->
+                        <div class="card-block" id="units">
+                            <div class="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-1">
+                                <h2 class="section-title mb-0"> Others Available Units</h2>
+                                <button type="button"
+                                    class="btn btn-link hide-unit p-0 text-decoration-none fw-semibold"
+                                    onclick="toggleAllUnits()">
+                                    <span id="toggle-label">Hide Unit Details</span>
+                                </button>
+                            </div>
+                            <p class="text-muted small mb-4">3 Premium Office Units Available</p>
+                            <!-- UNIT CARD 1 (open by default) -->
+                            <div class="unit-box " data-unit>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                    <div class="d-flex align-items-sm-center gap-3 flex-wrap flex-column flex-sm-row">
+                                        <div class="brand-logo-box">
+                                            <img src="./images/project-present-brands/Chaayos-tea.png" alt="">
+                                        </div>
+                                        <div>
+                                            <div class="lbl"
+                                                style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#6b7280;">
+                                                BRAND</div>
+                                            <div class="fw-bold" style="font-size:13px;">Chaayos</div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        class="rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:34px;height:34px;background:#fafaf5;border:1px solid rgba(18,24,31,.1);"
+                                        onclick="toggleUnit(this)">
+                                        <i data-lucide="chevron-up" class="chev" style="width:16px;height:16px;"></i>
+                                    </button>
+                                </div>
+                                <div class="unit-body is-closed">
+                                    <!-- Stats Grid (4 cols first row, 3 cols second row + features) -->
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">ANNUAL ROI</div>
+                                                <div class="val" style="font-size:20px;">5.64%*</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">LOCK IN</div>
+                                                <div class="val" style="font-size:20px;">9 Yrs</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">FLOOR SIZE/AREA</div>
+                                                <div class="val" style="font-size:20px;">1000 Sqft</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">TENANT</div>
+                                                <div class="val" style="font-size:20px;">Bank</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">UP TO / MONTH</div>
+                                                <div class="val" style="font-size:20px;">14.58 L*</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">MINIMUM RENTAL</div>
+                                                <div class="val" style="font-size:20px;">60/-</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">FLOOR SIZE/AREA</div>
+                                                <div class="val" style="font-size:20px;">1000 Sqft</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <div class="stat-cell h-100">
+                                                <div class="unit-features">
+                                                    <div class="lbl">
+                                                        <i data-lucide="star"></i>
+                                                        <span>UNIT FEATURES</span>
+                                                    </div>
+                                                    <ul>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Bare Shell Office
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Premium Commercial Tower
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            High-Speed Elevators
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            100% Power Backup
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Dedicated Parking
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Description block -->
+                                    <div class="rounded-3 p-3 mb-3"
+                                        style="background:#fdf8ec;border:1px solid rgba(197,168,128,.25);">
+                                        <p class="mb-0 small"
+                                            style="color:var(--ink-soft);font-size:12.5px;line-height:1.6;">
+                                            Lorem ipsum dolor sit amet consectetur adipiscing elit. Earum in iste
+                                            itaque
+                                            reiciendis ut. Perferendis eos, quisquam distinctio officia modi
+                                            doloremque
+                                            earum tenetur commodi necessitatibus dicta beatae saepe voluptate harum!
+                                        </p>
+                                    </div>
+                                    <!-- Actions -->
+                                    <div class="d-flex flex-wrap align-items-center gap-2 justify-content-center">
+                                        <a href="tel:+919858445000" class="cta-phone" title="Call Advisor">
+                                            <i data-lucide="phone" style="width:16px;height:16px;"></i>
+                                        </a>
+                                        <button type="button" class="cta-dark"
+                                            onclick="openSiteVisitModal('ICICI Bank – Joy Central, Unit #01')">
+                                            <i data-lucide="calendar-check" class="ic-sm"></i>
+                                            <span>Schedule Site Visit</span>
+                                        </button>
+                                        <a href="https://api.whatsapp.com/send?phone=919858445000&text=Hi%20Nikhil,%20I%20am%20interested%20in%20the%20ICICI%20Bank%20pre-leased%20unit%20at%20AIPL%20Joy%20Central."
+                                            target="_blank" class="cta-wa">
+                                            <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M12.031 6c-3.313 0-6 2.687-6 6 0 1.25.385 2.41 1.047 3.375L6.156 19l3.781-.984A5.939 5.939 0 0 0 12.03 18c3.31 0 6-2.688 6-6s-2.69-6-6-6z" />
+                                            </svg>
+                                            <span>Chat Via WhatsApp</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- UNIT CARD 2 -->
+                            <div class="unit-box" data-unit>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                    <div class="d-flex align-items-sm-center gap-3 flex-wrap flex-column flex-sm-row">
+                                        <div class="brand-logo-box">
+                                            <img src="./images/project-present-brands/croma.png" alt="">
+                                        </div>
+                                        <div>
+                                            <div class="lbl"
+                                                style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#6b7280;">
+                                                BRAND</div>
+                                            <div class="fw-bold" style="font-size:13px;">Croma – Unit #05
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        class="rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:34px;height:34px;background:#fafaf5;border:1px solid rgba(18,24,31,.1);"
+                                        onclick="toggleUnit(this)">
+                                        <i data-lucide="chevron-down" class="chev" style="width:16px;height:16px;"></i>
+                                    </button>
+                                </div>
+                                <div class="unit-body is-closed">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">ANNUAL ROI</div>
+                                                <div class="val" style="font-size:20px;">5.64%*</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">LEASE</div>
+                                                <div class="val" style="font-size:20px;">Pre-Leased</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">LOCK IN</div>
+                                                <div class="val" style="font-size:20px;">9 Yrs</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">TENANT</div>
+                                                <div class="val" style="font-size:20px;">Bank</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">UP TO / MONTH</div>
+                                                <div class="val" style="font-size:20px;">14.58 L*</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">MINIMUM RENTAL</div>
+                                                <div class="val" style="font-size:20px;">60/-</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">FLOOR SIZE/AREA</div>
+                                                <div class="val" style="font-size:20px;">1000 Sqft</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <div class="stat-cell h-100">
+                                                <div class="unit-features">
+                                                    <div class="lbl">
+                                                        <i data-lucide="star"></i>
+                                                        <span>UNIT FEATURES</span>
+                                                    </div>
+                                                    <ul>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Bare Shell Office
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Premium Commercial Tower
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            High-Speed Elevators
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            100% Power Backup
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Dedicated Parking
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rounded-3 p-3 mb-3"
+                                        style="background:#fdf8ec;border:1px solid rgba(197,168,128,.25);">
+                                        <p class="mb-0 small"
+                                            style="color:var(--ink-soft);font-size:12.5px;line-height:1.6;">Lorem
+                                            ipsum
+                                            dolor sit amet consectetur adipiscing elit. Earum in iste itaque
+                                            reiciendis
+                                            ut. Perferendis eos, quisquam distinctio officia modi doloremque earum
+                                            tenetur commodi necessitatibus dicta beatae saepe voluptate harum!</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap align-items-center gap-2 justify-content-center">
+                                        <a href="tel:+919858445000" class="cta-phone"><i data-lucide="phone"
+                                                style="width:16px;height:16px;"></i></a>
+                                        <button type="button" class="cta-dark"
+                                            onclick="openSiteVisitModal('ICICI Bank – Joy Central, Unit #05')"><i
+                                                data-lucide="calendar-check" class="ic-sm"></i><span>Schedule Site
+                                                Visit</span></button>
+                                        <a href="https://api.whatsapp.com/send?phone=919858445000" target="_blank"
+                                            class="cta-wa">
+                                            <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M12.031 6c-3.313 0-6 2.687-6 6 0 1.25.385 2.41 1.047 3.375L6.156 19l3.781-.984A5.939 5.939 0 0 0 12.03 18c3.31 0 6-2.688 6-6s-2.69-6-6-6z" />
+                                            </svg>
+                                            <span>Chat Via WhatsApp</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- UNIT CARD 3 -->
+                            <div class="unit-box" data-unit>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                    <div class="d-flex align-items-sm-center gap-3 flex-wrap flex-column flex-sm-row">
+                                        <div class="brand-logo-box">
+                                            <img src="./images/project-present-brands/dominos.png" alt="">
+                                        </div>
+                                        <div>
+                                            <div class="lbl"
+                                                style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#6b7280;">
+                                                BRAND</div>
+                                            <div class="fw-bold" style="font-size:13px;">Dominos – Unit #09
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        class="rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:34px;height:34px;background:#fafaf5;border:1px solid rgba(18,24,31,.1);"
+                                        onclick="toggleUnit(this)">
+                                        <i data-lucide="chevron-down" class="chev" style="width:16px;height:16px;"></i>
+                                    </button>
+                                </div>
+                                <div class="unit-body is-closed">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">ANNUAL ROI</div>
+                                                <div class="val" style="font-size:20px;">5.64%*</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">LEASE</div>
+                                                <div class="val" style="font-size:20px;">Pre-Leased</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">LOCK IN</div>
+                                                <div class="val" style="font-size:20px;">9 Yrs</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">TENANT</div>
+                                                <div class="val" style="font-size:20px;">Bank</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">UP TO / MONTH</div>
+                                                <div class="val" style="font-size:20px;">14.58 L*</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">MINIMUM RENTAL</div>
+                                                <div class="val" style="font-size:20px;">60/-</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="stat-cell">
+                                                <div class="lbl">FLOOR SIZE/AREA</div>
+                                                <div class="val" style="font-size:20px;">1000 Sqft</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-3">
+                                            <div class="stat-cell h-100">
+                                                <div class="unit-features">
+                                                    <div class="lbl">
+                                                        <i data-lucide="star"></i>
+                                                        <span>UNIT FEATURES</span>
+                                                    </div>
+                                                    <ul>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Bare Shell Office
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Premium Commercial Tower
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            High-Speed Elevators
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            100% Power Backup
+                                                        </li>
+                                                        <li>
+                                                            <span class="bullet"></span>
+                                                            Dedicated Parking
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rounded-3 p-3 mb-3"
+                                        style="background:#fdf8ec;border:1px solid rgba(197,168,128,.25);">
+                                        <p class="mb-0 small"
+                                            style="color:var(--ink-soft);font-size:12.5px;line-height:1.6;">Lorem
+                                            ipsum
+                                            dolor sit amet consectetur adipiscing elit. Earum in iste itaque
+                                            reiciendis
+                                            ut. Perferendis eos, quisquam distinctio officia modi doloremque earum
+                                            tenetur commodi necessitatibus dicta beatae saepe voluptate harum!</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap align-items-center gap-2 justify-content-center">
+                                        <a href="tel:+919858445000" class="cta-phone"><i data-lucide="phone"
+                                                style="width:16px;height:16px;"></i></a>
+                                        <button type="button" class="cta-dark"
+                                            onclick="openSiteVisitModal('ICICI Bank – Joy Central, Unit #09')"><i
+                                                data-lucide="calendar-check" class="ic-sm"></i><span>Schedule Site
+                                                Visit</span></button>
+                                        <a href="https://api.whatsapp.com/send?phone=919858445000" target="_blank"
+                                            class="cta-wa">
+                                            <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M12.031 6c-3.313 0-6 2.687-6 6 0 1.25.385 2.41 1.047 3.375L6.156 19l3.781-.984A5.939 5.939 0 0 0 12.03 18c3.31 0 6-2.688 6-6s-2.69-6-6-6z" />
+                                            </svg>
+                                            <span>Chat Via WhatsApp</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -469,6 +936,36 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     lucide.createIcons();
+    
+    if (document.querySelector('.gallery-slider')) {
+        const gallerySwiper = new Swiper('.gallery-slider', {
+            slidesPerView: 1.15,
+            spaceBetween: 14,
+            navigation: {
+                nextEl: '.gallery-next',
+                prevEl: '.gallery-prev',
+            },
+            pagination: {
+                el: '.gallery-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                576: { slidesPerView: 2, spaceBetween: 16 },
+                992: { slidesPerView: 3, spaceBetween: 18 },
+            },
+        });
+
+        if (document.getElementById('unit-lightgallery')) {
+            lightGallery(document.getElementById('unit-lightgallery'), {
+                selector: '.gallery-item',
+                plugins: [lgThumbnail, lgZoom],
+                speed: 400,
+                download: false,
+                counter: true,
+                thumbnail: true,
+            });
+        }
+    }
     
     var thumbSwiper = new Swiper(".thumb-slider", {
         spaceBetween: 10,

@@ -169,6 +169,37 @@ class StoreProjectRequest extends FormRequest
                 'max:50',
             ],
 
+            'investment_details' => [
+                'nullable',
+                'array',
+            ],
+            'investment_details.*.heading' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'investment_details.*.points' => [
+                'nullable',
+                'array',
+            ],
+            'investment_details.*.points.*' => [
+                'nullable',
+                'string',
+            ],
+
+            'faqs' => [
+                'nullable',
+                'array',
+            ],
+            'faqs.*.question' => [
+                'nullable',
+                'string',
+            ],
+            'faqs.*.answer' => [
+                'nullable',
+                'string',
+            ],
+
             // Floor Plan
             'floor_plan_image' => [
                 'nullable',

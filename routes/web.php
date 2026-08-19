@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\CatalogController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::view('/contact', 'frontend.contact.index')->name('contact');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog/{projectSlug}/{unitSlug}', [CatalogController::class, 'unitShow'])->name('catalog.unit.show');

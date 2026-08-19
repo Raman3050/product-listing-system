@@ -699,6 +699,134 @@
 
 
 <div class="card shadow-sm mb-4">
+    <div class="card-header">
+        Investment Details
+    </div>
+    <div class="card-body">
+        @php
+            $investmentDetails = old('investment_details', $project->investment_details ?? []);
+            if (!is_array($investmentDetails) || empty($investmentDetails)) {
+                $investmentDetails = [['heading' => '', 'points' => ['']]];
+            } else {
+                foreach($investmentDetails as &$detail) {
+                    if (!isset($detail['points']) || !is_array($detail['points']) || empty($detail['points'])) {
+                        $detail['points'] = [''];
+                    }
+                }
+            }
+        @endphp
+
+        <div x-data="{
+                details: @js($investmentDetails),
+                addHeading() {
+                    this.details.push({ heading: '', points: [''] });
+                },
+                removeHeading(index) {
+                    if (this.details.length > 1) {
+                        this.details.splice(index, 1);
+                    }
+                },
+                addPoint(hIndex) {
+                    this.details[hIndex].points.push('');
+                },
+                removePoint(hIndex, pIndex) {
+                    if (this.details[hIndex].points.length > 1) {
+                        this.details[hIndex].points.splice(pIndex, 1);
+                    }
+                }
+            }">
+
+            <template x-for="(detail, hIndex) in details" :key="hIndex">
+                <div class="border rounded p-3 mb-3 bg-light">
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-9">
+                            <label class="form-label fw-bold">Heading</label>
+                            <input type="text" class="form-control" placeholder="e.g. Who this investment is built for" :name="`investment_details[${hIndex}][heading]`" x-model="detail.heading">
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeHeading(hIndex)" x-show="details.length > 1">
+                                <i class="bi bi-trash"></i> Remove Heading
+                            </button>
+                        </div>
+                    </div>
+
+                    <label class="form-label fw-semibold">Bullet Points</label>
+                    <template x-for="(point, pIndex) in detail.points" :key="pIndex">
+                        <div class="row mb-2 align-items-center">
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" placeholder="Point detail..." :name="`investment_details[${hIndex}][points][]`" x-model="detail.points[pIndex]">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-sm btn-outline-danger" @click="removePoint(hIndex, pIndex)" x-show="detail.points.length > 1">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-secondary" @click="addPoint(hIndex)">
+                            <i class="bi bi-plus-circle"></i> Add Point
+                        </button>
+                    </div>
+                </div>
+            </template>
+
+            <button type="button" class="btn btn-sm btn-primary mt-2" @click="addHeading()">
+                <i class="bi bi-plus-circle"></i> Add New Heading
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        Frequently Asked Questions (FAQs)
+    </div>
+    <div class="card-body">
+        @php
+            $faqs = old('faqs', $project->faqs ?? []);
+            if (!is_array($faqs) || empty($faqs)) {
+                $faqs = [['question' => '', 'answer' => '']];
+            }
+        @endphp
+
+        <div x-data="{
+                rows: @js($faqs),
+                addRow() {
+                    this.rows.push({ question: '', answer: '' });
+                },
+                removeRow(index) {
+                    if (this.rows.length > 1) {
+                        this.rows.splice(index, 1);
+                    }
+                }
+            }">
+
+            <template x-for="(row, index) in rows" :key="index">
+                <div class="row mb-3 align-items-center border-bottom pb-3">
+                    <div class="col-md-5">
+                        <label class="form-label small text-muted">Question</label>
+                        <input type="text" class="form-control" placeholder="e.g. Is this pre-leased?" :name="`faqs[${index}][question]`" x-model="row.question">
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label small text-muted">Answer</label>
+                        <input type="text" class="form-control" placeholder="e.g. Yes, it is." :name="`faqs[${index}][answer]`" x-model="row.answer">
+                    </div>
+                    <div class="col-md-2 text-end mt-4">
+                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeRow(index)" x-show="rows.length > 1">
+                            <i class="bi bi-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </template>
+
+            <button type="button" class="btn btn-sm btn-primary mt-2" @click="addRow()">
+                <i class="bi bi-plus-circle"></i> Add FAQ
+            </button>
+        </div>
+    </div>
+</div>
+<div class="card shadow-sm mb-4">
 
     <div class="card-header">
         SEO

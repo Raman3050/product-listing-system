@@ -72,9 +72,7 @@
                 <a href="#newlaunch">New Launch</a>
             </li>
             <li>
-                <a href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#sideImageModal">
+                <a href="{{ route('contact') }}">
                     Contact Us
                 </a>
             </li>
@@ -207,10 +205,7 @@
             </a>
         </li>
         <li>
-            <a
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#sideImageModal">
+            <a href="{{ route('contact') }}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact Us</span>
             </a>

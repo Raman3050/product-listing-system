@@ -42,6 +42,9 @@ class Project extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        
+        'investment_details',
+        'faqs',
 
         'status',
     ];
@@ -53,6 +56,8 @@ class Project extends Model
         'possession_date' => 'date',
 
         'nearby_locations' => 'array',
+        'investment_details' => 'array',
+        'faqs' => 'array',
     ];
 
     public function propertyCategory()
