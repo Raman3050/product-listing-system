@@ -1,5 +1,25 @@
 @extends('layouts.frontend')
 
+@php
+    if (!function_exists('formatIndianPrice')) {
+        function formatIndianPrice($price) {
+            if (empty($price)) return 'On Request';
+            if (is_numeric($price)) {
+                if ($price >= 10000000) {
+                    $val = $price / 10000000;
+                    $formatted = number_format($val, 2, '.', '');
+                    return rtrim(rtrim($formatted, '0'), '.') . ' Cr';
+                } else {
+                    $val = $price / 100000;
+                    $formatted = number_format($val, 2, '.', '');
+                    return rtrim(rtrim($formatted, '0'), '.') . ' L';
+                }
+            }
+            return $price;
+        }
+    }
+@endphp
+
 @section('content')
 
     <!-- ================= HERO SLIDER ================= -->
@@ -54,7 +74,7 @@
                             </div>
                         </div>
                         <div class="featured-price">
-                            Starts @ {{ $banner->unit->price ? number_format($banner->unit->price / 100000, 0) . ' L' : 'On Request' }}
+                            Starts @ {{ formatIndianPrice($banner->unit->price) }}
                         </div>
                         <a href="{{ route('catalog.show', $banner->project->slug) }}" class="featured-link">
                             <span>View Property</span>
@@ -166,17 +186,17 @@
                                 @endif
                                 <div class="photo-overlay"></div>
                                 <div class="badge">{{'RETAIL / COMMERCIAL' }}</div>
-                                <div class="price"><span>Investment Starts @</span>{{ $item->unit->price ? number_format($item->unit->price / 100000, 0) . ' L' : 'On Request' }}</div>
+                                <div class="price"><span>Investment Starts @</span>{{ formatIndianPrice($item->unit->price) }}</div>
                             </div>
                             <div class="content">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <div class="title">{{ $item->project->name ?? 'N/A' }}</div>
+                                        <div class="title">{{ $item->project->name }}</div>
                                         <div class="location">
                                             <svg viewBox="0 0 24 24">
                                                 <path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
                                             </svg>
-                                            {{ $item->project->location->name ?? 'Gurugram' }}
+                                            {{ $item->project->location->name }}
                                         </div>
                                     </div>
                                     <div>
@@ -190,22 +210,20 @@
                                 <div class="desc">
                                     @if($item->project && $item->project->pageDetails)
                                         {{ Str::limit(strip_tags($item->project->pageDetails->description), 150) }}
-                                    @else
-                                        Premium open-air retail destination offering shopping, dining, entertainment, and community experiences.
                                     @endif
                                 </div>
                                 <div class="stats">
                                     <div class="stat">
                                         <div class="label">Tenant</div>
-                                        <div class="value">{{ $item->unit->tenant->name ?? 'Retail' }}</div>
+                                        <div class="value">{{ $item->unit->tenant->name }}</div>
                                     </div>
                                     <div class="stat">
                                         <div class="label">Floor Size / Area</div>
-                                        <div class="value">{{ $item->unit->floor_size ?? 'N/A' }} Sqft</div>
+                                        <div class="value">{{ $item->unit->floor_size }} Sqft</div>
                                     </div>
                                     <div class="stat">
                                         <div class="label">Leasing</div>
-                                        <div class="value">{{ $item->unit->lease_status ?? 'N/A' }} @if($item->unit->lock_in_years) ({{ $item->unit->lock_in_years }} yrs Lock In) @endif</div>
+                                        <div class="value">{{ $item->unit->lease_status }} @if($item->unit->lock_in_years) ({{ $item->unit->lock_in_years }} yrs Lock In) @endif</div>
                                     </div>
                                 </div>
                                 <div class="row-stats">
@@ -215,11 +233,11 @@
                                     </div>
                                     <div class="row-stat">
                                         <span class="label">Rental</span>
-                                        <span class="value">{{ $item->unit->minimum_rental ?? ($item->unit->monthly_rental ?? 'N/A') }}</span>
+                                        <span class="value"> ₹ {{ $item->unit->minimum_rental ? number_format($item->unit->minimum_rental, 0) : ($item->unit->monthly_rental ? number_format($item->unit->monthly_rental, 0) : 'N/A') }} / Sqft</span>
                                     </div>
                                     <div class="row-stat">
                                         <span class="label">ROI</span>
-                                        <span class="value">{{ $item->unit->annual_roi ?? 'N/A' }}</span>
+                                        <span class="value">{{ $item->unit->annual_roi ?? 'N/A' }} %</span>
                                     </div>
                                 </div>
                                 <a href="{{ route('catalog.show', $item->project->slug) }}" style="text-decoration: none;">

@@ -48,8 +48,6 @@
                         <tr>
                             <th width="70">ID</th>
                             <th>Project</th>
-                            <th>Unit</th>
-                            <th>Image</th>
                             <th width="100">Sort Order</th>
                             <th width="100">Status</th>
                             <th width="150">Action</th>
@@ -60,14 +58,6 @@
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->project->name ?? 'N/A' }}</td>
-                            <td>{{ $item->unit->name ?? 'N/A' }}</td>
-                            <td>
-                                @if($item->display_image)
-                                    <img src="{{ Storage::disk('public')->url($item->display_image) }}" alt="Display Image" height="40">
-                                @else
-                                    <span class="text-muted">No image</span>
-                                @endif
-                            </td>
                             <td>{{ $item->sort_order }}</td>
                             <td>
                                 @if($item->status)

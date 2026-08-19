@@ -20,7 +20,7 @@ class HomePageFeaturedPropertyRequest extends FormRequest
         return [
             'project_id' => 'required|exists:projects,id',
             'unit_id' => 'required|exists:units,id',
-            'display_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'display_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
             'sort_order' => 'nullable|integer',
             'status' => 'boolean',
         ];

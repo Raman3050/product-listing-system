@@ -24,7 +24,7 @@ class StoreTenantRequest extends FormRequest
             'logo' => [
                 'nullable',
                 'image',
-                'mimes:jpg,jpeg,png,webp',
+                'mimes:jpg,jpeg,png,webp,avif',
                 'max:2048',
             ],
 

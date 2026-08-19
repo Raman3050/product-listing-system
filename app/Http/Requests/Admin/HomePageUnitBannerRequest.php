@@ -29,7 +29,7 @@ class HomePageUnitBannerRequest extends FormRequest
             'heading' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'button_text' => 'nullable|string|max:255',
-            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
             'card_title' => 'nullable|string|max:255',
             'card_category' => 'nullable|string|max:255',
             'card_brand' => 'nullable|string|max:255',
