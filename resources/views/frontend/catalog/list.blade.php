@@ -38,7 +38,7 @@
               <div class="invest-tag">
                 <span>{{ $project->builder?->name ?? '' }}</span>
               </div>
-              <a href="{{ route('catalog.show', $project->slug) }}" class="btn-view">View Project</a>
+              <a href="{{ route('catalog.show', [$project->builder->slug, $project->slug]) }}" class="btn-view">View Project</a>
             </div>
           </div>
 

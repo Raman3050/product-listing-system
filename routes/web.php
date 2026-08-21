@@ -9,9 +9,8 @@ use App\Http\Controllers\Frontend\CatalogController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::view('/contact', 'frontend.contact.index')->name('contact');
+Route::view('/new-launch', 'frontend.new-launch.index')->name('new-launch');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
-Route::get('/catalog/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
-Route::get('/catalog/{projectSlug}/{unitSlug}', [CatalogController::class, 'unitShow'])->name('catalog.unit.show');
 
 Route::get('/login-test', function () {
     return view('admin.auth.login');
@@ -33,3 +32,16 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Dynamic builder, project & unit routes (Keep at bottom)
+Route::get('/{builder_slug}', [CatalogController::class, 'builderShow'])
+    ->where('builder_slug', '^(?!admin)[^/]+$')
+    ->name('catalog.builder.show');
+
+Route::get('/{builder_slug}/{project_slug}', [CatalogController::class, 'projectShow'])
+    ->where('builder_slug', '^(?!admin)[^/]+$')
+    ->name('catalog.show');
+
+Route::get('/{builder_slug}/{project_slug}/{unit_slug}', [CatalogController::class, 'unitShow'])
+    ->where('builder_slug', '^(?!admin)[^/]+$')
+    ->name('catalog.unit.show');

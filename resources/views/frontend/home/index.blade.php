@@ -44,7 +44,7 @@
                                 {{ $banner->description }}
                             </p>
                             @if($banner->project)
-                            <a href="{{ route('catalog.show', $banner->project->slug) }}" class="hero-btn">
+                            <a href="{{ route('catalog.show', [$banner->project->builder->slug, $banner->project->slug]) }}" class="hero-btn">
                                 {{ $banner->button_text ?: 'Explore Properties' }}
                                 <i class="bi bi-arrow-right"></i>
                             </a>
@@ -76,7 +76,7 @@
                         <div class="featured-price">
                             Starts @ {{ formatIndianPrice($banner->unit->price) }}
                         </div>
-                        <a href="{{ route('catalog.show', $banner->project->slug) }}" class="featured-link">
+                        <a href="{{ route('catalog.show', [$banner->project->builder->slug, $banner->project->slug]) }}" class="featured-link">
                             <span>View Property</span>
                             <i data-lucide="arrow-right"></i>
                         </a>
@@ -115,7 +115,9 @@
                             @foreach($logos as $logo)
                                 @if($logo->builder && $logo->builder->logo)
                                     <div class="swiper-slide">
-                                        <img src="{{ Storage::disk('public')->url($logo->builder->logo) }}" alt="{{ $logo->builder->name }}">
+                                        <a href="{{ route('catalog.builder.show', $logo->builder->slug) }}">
+                                            <img src="{{ Storage::disk('public')->url($logo->builder->logo) }}" alt="{{ $logo->builder->name }}">
+                                        </a>
                                     </div>
                                 @endif
                             @endforeach
@@ -240,7 +242,7 @@
                                         <span class="value">{{ $item->unit->annual_roi ?? 'N/A' }} %</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('catalog.show', $item->project->slug) }}" style="text-decoration: none;">
+                                <a href="{{ route('catalog.show', [$item->project->builder->slug, $item->project->slug]) }}" style="text-decoration: none;">
                                     <button class="cta">
                                         View Property
                                         <svg viewBox="0 0 24 24" fill="none" stroke="#0d1520" stroke-width="2">
@@ -280,42 +282,42 @@
             </div>
             <div class="swiper propertySwiper">
                 <div class="swiper-wrapper">
+                    @foreach($projects as $proj)
                     <div class="swiper-slide">
                         <div class="property-card">
                             <div class="property-image">
-                                <img src="{{ asset('frontend_assets/images/projects/aipl-joy-square.jpg') }}" alt="Property">
+                                <img src="{{ Storage::disk('public')->url($proj->featured_image) }}" alt="{{ $proj->name }}">
                                 <div class="property-overlay"></div>
                                 <!-- Top Bar -->
                                 <div class="property-top">
                                     <div class="property-category">
                                         <span></span>
-                                        COMMERCIAL
+                                        {{ strtoupper($proj->propertyCategory->name ?? 'COMMERCIAL') }}
                                     </div>
                                     <div class="property-badge">
                                         <span class="badge-dot"></span>
-                                        4 AVAILABLE UNITS
+                                        {{ $proj->units()->count() }} AVAILABLE UNITS
                                     </div>
                                 </div>
                                 <div class="property-content-wrapper">
                                     <!-- Content -->
                                     <div class="property-content">
-                                        <div class="property-label d-none ">
+                                        <div class="property-label d-none">
                                             <span></span>
                                             UNDER CONSTRUCTION
                                         </div>
                                         <h2>
-                                            Aipl Joy Square
+                                            {{ $proj->name }}
                                         </h2>
                                         <div class="location">
                                             <svg viewBox="0 0 24 24">
                                                 <path
                                                     d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
                                             </svg>
-                                            Sector-88, Gurugram
+                                            {{ $proj->location->name ?? '' }}
                                         </div>
                                         <p>
-                                            Discover a wide range of commercial properties in Gurugram. We simplify your
-                                            search for office, retail, and industrial spaces to meet your requirements.
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($proj->description), 120) }}
                                         </p>
                                     </div>
                                     <!-- Bottom -->
@@ -323,35 +325,32 @@
                                         <div class="property-info">
                                             <div class="info-box">
                                                 <small>investment starts</small>
-                                                <h3>@ 5.78 Cr</h3>
+                                                <h3>@ {{ $proj->pageDetails->amount_start ?? 'N/A' }}</h3>
                                             </div>
                                             <div class="divider"></div>
                                             <div class="info-box">
                                                 <small>TOTAL UNITS</small>
-                                                <h3>7</h3>
+                                                <h3>{{ $proj->total_units ?? 0 }}</h3>
                                             </div>
                                             <div class="divider"></div>
                                             <div class="info-box">
                                                 <small>AVAILABLE</small>
-                                                <h3 class="available">57%</h3>
+                                                <h3 class="available">
+                                                    @if($proj->total_units > 0)
+                                                        {{ round(($proj->units()->count() / $proj->total_units) * 100) }}%
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </h3>
                                             </div>
                                         </div>
                                         <div class="div">
                                             <div class="property-brand-strip d-none ">
                                                 <div class="brand-logos">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/barbeque.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/bata.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/Benetton.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/calvin_klein.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/Chaayos-tea.png') }}" alt="">
-                                                    <span>
-                                                        Present Brands
-                                                        More Than 50+
-                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="property-buttons">
-                                                <a href="#" class="explore-btn">
+                                                <a href="{{ route('catalog.show', [$proj->builder->slug, $proj->slug]) }}" class="explore-btn">
                                                     EXPLORE
                                                     <i data-lucide="arrow-right"></i>
                                                 </a>
@@ -366,180 +365,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="property-card">
-                            <div class="property-image">
-                                <img src="{{ asset('frontend_assets/images/projects/airia-mall-business-District-Sec-68.webp') }}" alt="Property">
-                                <div class="property-overlay"></div>
-                                <!-- Top Bar -->
-                                <div class="property-top">
-                                    <div class="property-category">
-                                        <span></span>
-                                        COMMERCIAL
-                                    </div>
-                                    <div class="property-badge">
-                                        <span class="badge-dot"></span>
-                                        4 AVAILABLE UNITS
-                                    </div>
-                                </div>
-                                <div class="property-content-wrapper">
-                                    <!-- Content -->
-                                    <div class="property-content">
-                                        <div class="property-label d-none">
-                                            <span></span>
-                                            UNDER CONSTRUCTION
-                                        </div>
-                                        <h2>
-                                            Airia Mall Business District
-                                        </h2>
-                                        <div class="location">
-                                            <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
-                                            </svg>
-                                            Sector-68, Gurugram
-                                        </div>
-                                        <p>
-                                            Located just 60 metres from the beach near Tamarin Bay,
-                                            147 International Residences offers an exclusive lifestyle
-                                            on Mauritius' west coast.
-                                        </p>
-                                    </div>
-                                    <!-- Bottom -->
-                                    <div class="property-footer">
-                                        <div class="property-info">
-                                            <div class="info-box">
-                                                <small>investment starts</small>
-                                                <h3>@ 5.78 Cr</h3>
-                                            </div>
-                                            <div class="divider"></div>
-                                            <div class="info-box">
-                                                <small>TOTAL UNITS</small>
-                                                <h3>7</h3>
-                                            </div>
-                                            <div class="divider"></div>
-                                            <div class="info-box">
-                                                <small>AVAILABLE</small>
-                                                <h3 class="available">57%</h3>
-                                            </div>
-                                        </div>
-                                        <div class="div">
-                                            <div class="property-brand-strip d-none">
-                                                <div class="brand-logos">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/barbeque.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/bata.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/Benetton.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/calvin_klein.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/Chaayos-tea.png') }}" alt="">
-                                                    <span>
-                                                        Present Brands
-                                                        More Than 50+
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="property-buttons">
-                                                <a href="#" class="explore-btn">
-                                                    EXPLORE
-                                                    <i data-lucide="arrow-right"></i>
-                                                </a>
-                                                <button class="save-btn d-none">
-                                                    <i data-lucide="heart"></i>
-                                                    Save
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="property-card">
-                            <div class="property-image">
-                                <img src="{{ asset('frontend_assets/images/projects/dlf-club-arcade-sec-91.webp') }}" alt="Property">
-                                <div class="property-overlay"></div>
-                                <!-- Top Bar -->
-                                <div class="property-top">
-                                    <div class="property-category">
-                                        <span></span>
-                                        COMMERCIAL
-                                    </div>
-                                    <div class="property-badge">
-                                        <span class="badge-dot"></span>
-                                        4 AVAILABLE UNITS
-                                    </div>
-                                </div>
-                                <div class="property-content-wrapper">
-                                    <!-- Content -->
-                                    <div class="property-content">
-                                        <div class="property-label d-none">
-                                            <span></span>
-                                            UNDER CONSTRUCTION
-                                        </div>
-                                        <h2>
-                                            DLF Club Arcade Sec 91
-                                        </h2>
-                                        <div class="location">
-                                            <svg viewBox="0 0 24 24">
-                                                <path
-                                                    d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z" />
-                                            </svg>
-                                            Sector-91, Gurugram
-                                        </div>
-                                        <p>
-                                            Club Arcade is a premium high-street retail and commercial development by
-                                            DLF, located within the large integrated township of DLF Garden City, Sector
-                                            91, New Gurugram.
-                                        </p>
-                                    </div>
-                                    <!-- Bottom -->
-                                    <div class="property-footer">
-                                        <div class="property-info">
-                                            <div class="info-box">
-                                                <small>investment starts</small>
-                                                <h3>@ 5.78 Cr</h3>
-                                            </div>
-                                            <div class="divider"></div>
-                                            <div class="info-box">
-                                                <small>TOTAL UNITS</small>
-                                                <h3>7</h3>
-                                            </div>
-                                            <div class="divider"></div>
-                                            <div class="info-box">
-                                                <small>AVAILABLE</small>
-                                                <h3 class="available">57%</h3>
-                                            </div>
-                                        </div>
-                                        <div class="div">
-                                            <div class="property-brand-strip d-none">
-                                                <div class="brand-logos">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/barbeque.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/bata.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/Benetton.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/calvin_klein.png') }}" alt="">
-                                                    <img src="{{ asset('frontend_assets/images/project-present-brands/Chaayos-tea.png') }}" alt="">
-                                                    <span>
-                                                        Present Brands
-                                                        More Than 50+
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="property-buttons">
-                                                <a href="#" class="explore-btn">
-                                                    EXPLORE
-                                                    <i data-lucide="arrow-right"></i>
-                                                </a>
-                                                <button class="save-btn d-none">
-                                                    <i data-lucide="heart"></i>
-                                                    Save
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+
                 </div>
                 <!-- Navigation -->
                 <button class="property-prev" aria-label="Previous">

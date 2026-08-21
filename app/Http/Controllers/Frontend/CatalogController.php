@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Unit;
+use App\Models\Builder;
 
 class CatalogController extends Controller
 {
@@ -26,7 +27,26 @@ class CatalogController extends Controller
         );
     }
 
-    public function show(string $slug)
+
+    public function builderShow(string $builderSlug)
+    {
+        $builder = Builder::with([
+            'projects.location',
+            'projects.propertyCategory',
+            'projects.units',
+            'projects.pageDetails'
+        ])
+        ->where('slug', $builderSlug)
+        ->where('status', true)
+        ->firstOrFail();
+
+        return view(
+            'frontend.builder.show',
+            compact('builder')
+        );
+    }
+
+    public function projectShow(string $builderSlug, string $projectSlug)
     {
         $project = Project::with([
             'builder',
@@ -38,7 +58,10 @@ class CatalogController extends Controller
             'units.features',
             'units.images',
         ])
-        ->where('slug', $slug)
+        ->whereHas('builder', function($q) use ($builderSlug) {
+            $q->where('slug', $builderSlug);
+        })
+        ->where('slug', $projectSlug)
         ->where('status', true)
         ->firstOrFail();
 
@@ -48,7 +71,7 @@ class CatalogController extends Controller
         );
     }
 
-    public function unitShow(string $projectSlug, string $unitSlug)
+    public function unitShow(string $builderSlug, string $projectSlug, string $unitSlug)
     {
         $project = Project::with([
             'builder',
@@ -60,6 +83,9 @@ class CatalogController extends Controller
             'units.features',
             'units.images',
         ])
+        ->whereHas('builder', function($q) use ($builderSlug) {
+            $q->where('slug', $builderSlug);
+        })
         ->where('slug', $projectSlug)
         ->where('status', true)
         ->firstOrFail();

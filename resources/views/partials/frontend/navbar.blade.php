@@ -69,7 +69,7 @@
                 <a href="#Preleased">Pre Leased</a>
             </li>
             <li>
-                <a href="#newlaunch">New Launch</a>
+                <a href="{{ route('new-launch') }}">New Launch</a>
             </li>
             <li>
                 <a href="{{ route('contact') }}">
@@ -199,7 +199,7 @@
             </a>
         </li>
         <li>
-            <a href="#newlaunch">
+            <a href="{{ route('new-launch') }}">
                 <i class="bi bi-rocket-takeoff"></i>
                 <span>New Launch</span>
             </a>

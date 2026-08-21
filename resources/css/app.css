@@ -5,8 +5,7 @@
 @import './admin/navbar.css';
 @import './admin/dashboard.css';
 @import './admin/responsive.css';
-@import './frontend/frontend.css';
-@import "./frontend/frontend.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

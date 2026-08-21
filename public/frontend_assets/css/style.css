@@ -1210,6 +1210,13 @@ ABOUT PAGE
   color: #fff;
   text-transform: capitalize;
 }
+
+
+.about-page-hero__content h1 em{
+      color: var(--gold);
+    font-style: italic;
+    font-weight: 500;
+}
 .about-page-hero__content p {
   font-family: var(--manrope);
   font-size: 19.2px;
@@ -5379,24 +5386,39 @@ Responsive
   }
  .contact-form .btn-submit:hover{background:var(--ink); color:#fff;}
 
+
+/* ---------- filter bar ---------- */
+  .filter-bar{
+    background:#fff; border:1px solid var(--hairline); border-radius:16px;
+    padding:20px 22px; box-shadow:var(--shadow-card); margin:32px 0 36px;
+  }
+  .filter-bar .form-label{
+    font-family:var(--manrope); font-weight:700; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.08em; color:#9a9484; margin-bottom:7px;
+  }
+  .filter-bar .form-select, .filter-bar .form-control{
+    border:1px solid var(--hairline); border-radius:10px; padding:11px 14px;
+    font-family:var(--manrope); font-size:13.5px; color:var(--ink); background:var(--paper);
+  }
+  .filter-bar .form-select:focus, .filter-bar .form-control:focus{
+    outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-dim);
+  }
+
+  .btn-gold{
+    font-family:var(--manrope); font-weight:700; font-size:13.5px;
+    background:var(--ink); color:#fff; border:none; border-radius:10px;
+    padding:11px 20px; transition:.2s; white-space:nowrap;
+  }
+  .btn-gold:hover{background:var(--accent-deep); color:#fff;}
+
+.new-launch .property-image {
+      height: 520px;
+}
+
   @media (max-width: 991.98px){
     .contact-panel{margin-top:-48px; padding:44px 28px 36px; border-radius:18px;}
     
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Laptop */

@@ -262,7 +262,7 @@
 
                 </div>
 
-                <a href="{{ route('catalog.unit.show', [$project->slug, $unit->slug]) }}" class="btn-view">
+                <a href="{{ route('catalog.unit.show', [$project->builder->slug, $project->slug, $unit->slug]) }}" class="btn-view">
                   View Details
                 </a>
 

@@ -24,6 +24,11 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view('frontend.home.index', compact('banners', 'logos', 'featuredProperties'));
+        $projects = \App\Models\Project::with(['location', 'propertyCategory', 'units', 'pageDetails', 'builder'])
+            ->where('status', true)
+            ->latest()
+            ->get();
+
+        return view('frontend.home.index', compact('banners', 'logos', 'featuredProperties', 'projects'));
     }
 }
